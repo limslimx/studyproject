@@ -4,11 +4,15 @@ import com.studyproject.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service
@@ -24,10 +28,12 @@ public class AccountService {
    이렇게 함으로써 newAccount 객체는 detached 상태가 아니라 영속 상태로 만들어줄 수 있다.
      */
     @Transactional
-    public void processNewAccount(SignUpForm signUpForm) {
+    public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken();
         sendSignUpConfirmEmail(newAccount);
+
+        return newAccount;
     }
 
     private Account saveNewAccount(@Valid SignUpForm signUpForm) {
@@ -48,5 +54,10 @@ public class AccountService {
         mailMessage.setSubject("북스터디 회원가입인증 메일");
         mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email=" + newAccount.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void login(Account account) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(account.getNickname(), account.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }

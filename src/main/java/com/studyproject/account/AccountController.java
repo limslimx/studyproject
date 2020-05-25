@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Controller
@@ -38,7 +37,8 @@ public class AccountController {
             return "account/sign-up2";
         }
 
-        accountService.processNewAccount(signUpForm);
+        Account account = accountService.processNewAccount(signUpForm);
+        accountService.login(account);
 
         //TODO 회원가입 처리
         return "redirect:/";
@@ -53,13 +53,14 @@ public class AccountController {
             return view;
         }
 
-        if (!account.getEmailCheckToken().equals(token)) {
+        if (!account.isValidToken(token)) {
             model.addAttribute("error", "wrong.token");
             return view;
         }
 
         //이메일 인증이 완료되었다고 account.emailVerified필드에 true값 넣고, 언제 가입했는지 알기 위해 joinedAt에 LocalDateTime.now()값을 넣는 로직
         account.completeSignUp();
+        accountService.login(account);
 
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
