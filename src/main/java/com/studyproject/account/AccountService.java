@@ -57,7 +57,9 @@ public class AccountService {
     }
 
     public void login(Account account) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(account.getNickname(), account.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        //principal은 여기서 인증 시에 authentication에 들어있는 첫번째 파라미터 값이다. 즉, 여기서는 account.getNickname() 이라고 생각하면 된다
+        //인증(로그인)을 안한 상태에서 접근하는 경우에는 principal이 anonymousUser라는 문자열값이 들어간다.
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(new UserAccount(account), account.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContextHolder.getContext().setAuthentication(token);
     }
 }
