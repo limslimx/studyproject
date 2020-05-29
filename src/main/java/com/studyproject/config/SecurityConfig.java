@@ -14,10 +14,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        //페이지별 접근 권한 설정
         http.authorizeRequests()
                 .mvcMatchers("/", "/login", "/sign-up", "check-email-token", "/email-login", "/check-email-login", "/login-link").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()
                 .anyRequest().authenticated();
+
+        //로그인 기능 설정
+        http.formLogin()
+                .loginPage("/login").permitAll();
+
+        //로그아웃 기능 설정
+        http.logout()
+                .logoutSuccessUrl("/");
     }
 
     @Override

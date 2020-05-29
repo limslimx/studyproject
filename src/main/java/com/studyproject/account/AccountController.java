@@ -3,8 +3,6 @@ package com.studyproject.account;
 import com.studyproject.domain.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,12 +28,14 @@ public class AccountController {
         webDataBinder.addValidators(signUpFormValidator);
     }
 
+    //회원가입 폼 핸들러
     @GetMapping("/sign-up")
     public String signUpForm(Model model) {
         model.addAttribute("signUpForm", new SignUpForm());
         return "account/sign-up2";
     }
 
+    //회원가입 처리 핸들러
     @PostMapping("/sign-up")
     public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
         if (errors.hasErrors()) {
@@ -53,6 +52,7 @@ public class AccountController {
         return "redirect:/";
     }
 
+    //이메일 인증 기능 처리 핸들러
     @GetMapping("/check-email-token")
     public String checkEmailToken(String token, String email, Model model) {
         Account account = accountRepository.findByEmail(email);
@@ -77,15 +77,22 @@ public class AccountController {
         return view;
     }
 
+    //이메일 인증 폼 핸들러
     @GetMapping("/check-email")
     public String checkEmail(@CurrentUser Account account, Model model) {
         model.addAttribute("email", account.getEmail());
         return "account/check-email";
     }
 
+    //이메일 인증 링크 재전송 기능 핸들러
     @GetMapping("/resend-email")
     public String resendEmail(@CurrentUser Account account) {
         accountService.sendSignUpConfirmEmail(account);
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "account/login";
     }
 }

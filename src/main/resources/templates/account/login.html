@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="login-fragments.html :: head"></head>
+
+<body class="bg-light">
+<div class="container">
+    <div class="py-5 text-center">
+        <img class="mb-4" src="/images/logo.png" alt="" width="72" height="72">
+        <h2>로그인</h2>
+    </div>
+    <div class="row justify-content-center">
+        <form class="form-signin needs-validation" th:action="@{/login}" method="post" novalidate>
+
+            <div class="form-label-group">
+                <input id="username" type="text" name="username" class="form-control" placeholder="Your email or nickname" aria-describedby="emailHelp" required>
+                <label for="username">닉네임 or 이메일</label>
+                <small id="emailHelp" class="form-text text-muted">
+                    닉네임 또는 이메일을 입력하세요.
+                </small>
+                <small class="invalid-feedback">닉네임 또는 이메일을 입력하세요.</small>
+            </div>
+
+            <div class="form-label-group">
+                <input id="password" type="password" name="password" class="form-control" placeholder="Your password" aria-describedby="passwordHelp" required>
+                <label for="password">비밀번호</label>
+                <small id="passwordHelp" class="form-text text-muted">
+                    비밀번호를 입력하세요.
+                </small>
+                <small class="invalid-feedback">비밀번호를 입력하세요.</small>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">로그인</button>
+                <small id="submitHelp" class="form-text text-muted">
+                    독서할래에 가입하려면 <a th:href="@{/sign-up}">여기를</a> 클릭하세요.
+                </small>
+            </div>
+        </form>
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+</div>
+<script th:replace="fragments.html :: form-validation"></script>
+</body>
+</html>
