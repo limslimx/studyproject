@@ -59,21 +59,18 @@ public class AccountController {
         Account account = accountRepository.findByEmail(email);
         String view = "account/checked-email";
         if (account == null) {
-            log.info("first");
             model.addAttribute("error", "wrong.email");
             return view;
         }
 
         log.info("emailToken: " + account.getEmailCheckToken());
         if (!account.isValidToken(token)) {
-            log.info("second");
             model.addAttribute("error", "wrong.token");
             return view;
         }
 
         //이메일 인증이 완료되었다고 account.emailVerified필드에 true값 넣고, 언제 가입했는지 알기 위해 joinedAt에 LocalDateTime.now()값을 넣는 로직
-        account.completeSignUp();
-        accountService.login(account);
+        accountService.completeSignUp(account);
 
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());

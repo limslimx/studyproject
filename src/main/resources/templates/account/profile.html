@@ -36,30 +36,35 @@
         <div class="col-8">
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <!-- url 정보란 -->
                     <p th:if="${!#strings.isEmpty(account.url)}">
                             <span style="font-size: 20px;">
                                 <i class="fas fa-link col-1"></i>
                             </span>
                         <span th:text="${account.url}" class="col-11"></span>
                     </p>
+                    <!-- 직장 정보란 -->
                     <p th:if="${!#strings.isEmpty(account.occupation)}">
                             <span style="font-size: 20px;">
                                 <i class="fas fa-briefcase col-1"></i>
                             </span>
                         <span th:text="${account.occupation}" class="col-9"></span>
                     </p>
+                    <!-- 지역 정보란 -->
                     <p th:if="${!#strings.isEmpty(account.location)}">
                             <span style="font-size: 20px;">
                                 <i class="fas fa-map-marker-alt col-1"></i>
                             </span>
                         <span th:text="${account.location}" class="col-9"></span>
                     </p>
+                    <!-- 이메일 정보란 -->
                     <p th:if="${isOwner}">
                             <span style="font-size: 20px;">
                                 <i class="far fa-envelope col-1"></i>
                             </span>
                         <span th:text="${account.email}" class="col-9"></span>
                     </p>
+                    <!-- 가입날짜 정보란 -->
                     <p th:if="${isOwner || account.emailVerified}">
                             <span style="font-size: 20px;">
                                 <i class="far fa-calendar-check col-1"></i>
@@ -69,6 +74,7 @@
                             </span>
                         <span th:text="${#temporals.format(account.joinedAt, 'yyyy년 M월 가입')}" class="col-9"></span>
                     </p>
+                    <!-- 프로필 수정 버튼 -->
                     <div th:if="${isOwner}">
                         <a class="btn btn-outline-primary" th:href="@{/settings/profile}">프로필 수정</a>
                     </div>
