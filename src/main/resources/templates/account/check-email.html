@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+<div th:replace="fragments.html :: main-nav"></div>
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <p class="lead">독서할래 가입 완료하기</p>
+            <h2>독서할래 회원가입을 완료하려면 아래 메일을 인증해주세요.</h2>
+            <div>
+                <p class="lead" th:text="${email}">your email</p>
+                <a class="btn btn-outline-info" th:href="@{/resend-email}">인증 이메일 재전송</a>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments.html :: footer"></div>
+</body>
+</html>

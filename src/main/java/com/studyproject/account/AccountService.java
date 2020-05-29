@@ -48,10 +48,10 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    private void sendSignUpConfirmEmail(Account newAccount) {
+    public void sendSignUpConfirmEmail(Account newAccount) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(newAccount.getEmail());
-        mailMessage.setSubject("북스터디 회원가입인증 메일");
+        mailMessage.setSubject("독서할래 회원가입 인증 메일");
         mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email=" + newAccount.getEmail());
         javaMailSender.send(mailMessage);
     }
