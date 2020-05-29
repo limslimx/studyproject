@@ -69,6 +69,8 @@ public class AccountService implements UserDetailsService {
     //UserDetailsService를 implement하고 아래의 메서드를 오버라이딩 하기만 하면 Spring Security에서 자동으로 로그인 처리를 해준다. 즉, 여기서는 사용자가 로그인폼에서 입력한 값이 계정db에 존재하는지 확인해주는 코드만 작성하면 된다.
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
+
+        //db에서 우선 email값으로 계정 정보가 존재하는지 확인해보고 없으면 nickname값으로 확인함
         Account account = accountRepository.findByEmail(emailOrNickname);
         if (account == null) {
             account = accountRepository.findByNickname(emailOrNickname);
@@ -78,6 +80,7 @@ public class AccountService implements UserDetailsService {
             throw new UsernameNotFoundException(emailOrNickname);
         }
 
+        //우리가 principal값으로 썼던 UserAccount 객체를 사용함
         return new UserAccount(account);
     }
 }

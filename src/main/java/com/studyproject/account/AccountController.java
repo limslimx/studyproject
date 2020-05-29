@@ -9,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -58,12 +59,14 @@ public class AccountController {
         Account account = accountRepository.findByEmail(email);
         String view = "account/checked-email";
         if (account == null) {
+            log.info("first");
             model.addAttribute("error", "wrong.email");
             return view;
         }
 
         log.info("emailToken: " + account.getEmailCheckToken());
         if (!account.isValidToken(token)) {
+            log.info("second");
             model.addAttribute("error", "wrong.token");
             return view;
         }
@@ -91,8 +94,23 @@ public class AccountController {
         return "redirect:/";
     }
 
+    //로그인 폼 핸들러
     @GetMapping("/login")
     public String login() {
         return "account/login";
+    }
+
+
+    @GetMapping("/profile/{nickname}")
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
+        Account byNickname = accountRepository.findByNickname(nickname);
+        if (byNickname == null) {
+            throw new IllegalArgumentException(nickname + "에 해당되는 사용자가 없습니다.");
+        }
+
+        model.addAttribute("account", byNickname);
+        model.addAttribute("isOwner", byNickname.equals(account));
+
+        return "account/profile";
     }
 }
