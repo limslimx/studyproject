@@ -12,7 +12,7 @@
             <div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
         </div>
 
-        <div class="col-8">
+        <div class="col-6">
             <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
                 <span th:text="${message}">메시지</span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -20,8 +20,10 @@
                 </button>
             </div>
             <div class="row">
-                <h2 class="col-sm-12" th:text="${account.nickname}">nickname</h2>
+                <h2 class="col-sm-12">공개 프로필</h2>
             </div>
+            <hr/>
+
             <div class="row mt-3">
                 <form class="col-sm-6" th:action="@{/settings/profile}" th:object="${profile}" method="post" novalidate>
                     <div class="form-group">

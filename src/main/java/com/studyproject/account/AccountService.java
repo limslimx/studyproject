@@ -1,6 +1,7 @@
 package com.studyproject.account;
 
 import com.studyproject.domain.Account;
+import com.studyproject.settings.PasswordForm;
 import com.studyproject.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -95,6 +96,11 @@ public class AccountService implements UserDetailsService {
     public void updateProfile(Account account, Profile profile) {
         account.setBio(profile.getBio());
         account.setLocation(profile.getLocation());
+        accountRepository.save(account);
+    }
+
+    public void updatePassword(Account account, PasswordForm passwordForm) {
+        account.setPassword(passwordEncoder.encode(passwordForm.getNewPassword()));
         accountRepository.save(account);
     }
 }
