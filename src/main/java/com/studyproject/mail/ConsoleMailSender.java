@@ -12,6 +12,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.InputStream;
 
 @Slf4j
+@Profile("local") //application.properties가 local일때만 이 클래스를 빈으로 등록해주겠다는 뜻
 @Component
 public class ConsoleMailSender implements JavaMailSender {
     @Override

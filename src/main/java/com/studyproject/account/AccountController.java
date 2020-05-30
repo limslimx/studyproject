@@ -101,13 +101,6 @@ public class AccountController {
         return "redirect:/";
     }
 
-    //로그인 폼 핸들러
-    @GetMapping("/login")
-    public String login() {
-        return "account/login";
-    }
-
-
     //프로필 뷰 핸들러
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {

@@ -4,6 +4,7 @@ import com.studyproject.domain.Account;
 import com.studyproject.settings.NotificationForm;
 import com.studyproject.settings.Profile;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.util.Collections;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -72,7 +74,7 @@ public class AccountService implements UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
-
+        log.info("########## loaduserByUsername start! ########## ");
         //db에서 우선 email값으로 계정 정보가 존재하는지 확인해보고 없으면 nickname값으로 확인함
         Account account = accountRepository.findByEmail(emailOrNickname);
         if (account == null) {
@@ -83,6 +85,7 @@ public class AccountService implements UserDetailsService {
             throw new UsernameNotFoundException(emailOrNickname);
         }
 
+        log.info("########## loaduserByUsername end! ########## ");
         //우리가 principal값으로 썼던 UserAccount 객체를 사용함
         return new UserAccount(account);
     }

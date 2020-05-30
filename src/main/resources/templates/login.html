@@ -5,11 +5,11 @@
 <body class="bg-light">
 <div class="container">
     <div class="py-5 text-center">
-        <img class="mb-4" src="/images/logo.png" alt="" width="72" height="72">
+        <img class="mb-4" src="images/logo.png" width="72" height="72">
         <h2>로그인</h2>
     </div>
     <div class="row justify-content-center">
-        <form class="form-signin needs-validation" th:action="@{/login}" method="post" novalidate>
+        <form class="form-signin needs-validation" action="#" th:action="@{/login}" method="post" novalidate>
 
             <div class="form-label-group">
                 <input id="username" type="text" name="username" class="form-control" placeholder="Your email or nickname" aria-describedby="emailHelp" required>
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">로그인</button>
                 <small id="submitHelp" class="form-text text-muted">
-                    독서할래에 가입하려면 <a th:href="@{/sign-up}">여기를</a> 클릭하세요.
+                    가입하려면 <a th:href="@{/sign-up}">여기를</a> 클릭하세요.
                 </small>
             </div>
         </form>
