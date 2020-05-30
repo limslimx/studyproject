@@ -21,11 +21,17 @@ import javax.validation.Valid;
 @Controller
 public class SettingsController {
 
+    private final NicknameFormValidator nicknameFormValidator;
     private final AccountService accountService;
 
     @InitBinder("passwordForm")
-    public void initBinder(WebDataBinder webDataBinder) {
+    public void passwordInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(new PasswordFormValidator());
+    }
+
+    @InitBinder("nicknameForm")
+    public void nicknameInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(nicknameFormValidator);
     }
 
     @GetMapping("/settings/profile")
@@ -87,5 +93,23 @@ public class SettingsController {
         accountService.updateNotification(account, notificationForm);
         attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
         return "redirect:/settings/notifications";
+    }
+
+    @GetMapping("/settings/account")
+    public String updateAccountForm(@CurrentUser Account account, Model model) {
+        model.addAttribute("account", account);
+        model.addAttribute("nicknameForm", new NicknameForm(account));
+        return "/settings/account";
+    }
+
+    @PostMapping("/settings/account")
+    public String updateAccount(@CurrentUser Account account, @Valid NicknameForm nickNameForm, Errors errors, Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
+            model.addAttribute("account", account);
+            return "/settings/account";
+        }
+        accountService.updateNickname(account, nickNameForm.getNickname());
+        attributes.addFlashAttribute("message", "닉네임을 수정하였습니다.");
+        return "redirect:/settings/account";
     }
 }

@@ -113,4 +113,19 @@ public class AccountService implements UserDetailsService {
         account.setStudyUpdateByWeb(notificationForm.isStudyUpdatedByWeb());
         accountRepository.save(account);
     }
+
+    public void updateNickname(Account account, String nickname) {
+        account.setNickname(nickname);
+        accountRepository.save(account);
+        login(account); //navbar쪽의 로그인 정보를 바꿔주기 위해서는 authentication에 갱신된 account를 등록해줘야하기 때문
+    }
+
+    public void sendLoginLink(Account account) {
+        account.generateEmailCheckToken();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(account.getEmail());
+        mailMessage.setSubject("독설할래 사이트의 비밀번호 수정 링크입니다.");
+        mailMessage.setText("/update-password-by-email?token=" + account.getEmailCheckToken() + "&email=" + account.getEmail());
+        javaMailSender.send(mailMessage);
+    }
 }

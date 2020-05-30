@@ -1,6 +1,8 @@
 package com.studyproject.account;
 
 import com.studyproject.domain.Account;
+import com.studyproject.settings.PasswordForm;
+import com.studyproject.settings.PasswordFormValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -25,8 +28,13 @@ public class AccountController {
 
     //회원가입 시에 입력한 닉네임 또는 이메일이 db에 이미 존재하면 오류 잡아줌
     @InitBinder("signUpForm")
-    public void initBinder(WebDataBinder webDataBinder) {
+    public void signupInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(signUpFormValidator);
+    }
+
+    @InitBinder("passwordForm")
+    public void passwordInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(new PasswordFormValidator());
     }
 
     //회원가입 폼 핸들러
@@ -100,6 +108,7 @@ public class AccountController {
     }
 
 
+    //프로필 뷰 핸들러
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
         Account byNickname = accountRepository.findByNickname(nickname);
@@ -111,5 +120,44 @@ public class AccountController {
         model.addAttribute("isOwner", byNickname.equals(account));
 
         return "account/profile";
+    }
+
+    @GetMapping("/email-login")
+    public String emailLogin() {
+        return "account/email-login";
+    }
+
+    @PostMapping("/email-login")
+    public String sendEmailLoginLink(String email, Model model, RedirectAttributes attributes) {
+        Account byEmail = accountRepository.findByEmail(email);
+        if (byEmail == null) {
+            model.addAttribute("error", "유효한 이메일이 주소가 아닙니다.");
+            return "account/email-login";
+        }
+        accountService.sendLoginLink(byEmail);
+        attributes.addFlashAttribute("message", "이메일 인증 메일을 발송했습니다.");
+        return "redirect:/email-login";
+    }
+
+    @GetMapping("/update-password-by-email")
+    public String updatePasswordByEmail(String token, String email, Model model) {
+        Account byEmail = accountRepository.findByEmail(email);
+        if (byEmail == null || !byEmail.isValidToken(token)) {
+            model.addAttribute("error", "비밀번호를 수정할 수 없습니다.");
+            return "account/update-password-by-email";
+        }
+        model.addAttribute("passwordForm", new PasswordForm());
+        accountService.login(byEmail);
+        return "account/update-password-by-email";
+    }
+
+    @PostMapping("/update/password")
+    public String updatePassword(@CurrentUser Account account, @Valid PasswordForm passwordForm, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("account", account);
+            return "account/update-password-by-email";
+        }
+        accountService.updatePassword(account, passwordForm.getNewPassword());
+        return "redirect:/";
     }
 }
