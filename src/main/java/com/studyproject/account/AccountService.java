@@ -1,7 +1,7 @@
 package com.studyproject.account;
 
 import com.studyproject.domain.Account;
-import com.studyproject.settings.PasswordForm;
+import com.studyproject.settings.NotificationForm;
 import com.studyproject.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -99,8 +99,18 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
     }
 
-    public void updatePassword(Account account, PasswordForm passwordForm) {
-        account.setPassword(passwordEncoder.encode(passwordForm.getNewPassword()));
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
+    public void updateNotification(Account account, NotificationForm notificationForm) {
+        account.setStudyCreatedByEmail(notificationForm.isStudyCreatedByEmail());
+        account.setStudyCreatedByWeb(notificationForm.isStudyCreatedByWeb());
+        account.setStudyEnrollmentResultByEmail(notificationForm.isStudyEnrollmentResultByEmail());
+        account.setStudyEnrollmentResultByWeb(notificationForm.isStudyEnrollmentResultByWeb());
+        account.setStudyUpdateByEmail(notificationForm.isStudyUpdatedByEmail());
+        account.setStudyUpdateByWeb(notificationForm.isStudyUpdatedByWeb());
         accountRepository.save(account);
     }
 }

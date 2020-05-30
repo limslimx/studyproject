@@ -65,9 +65,27 @@ public class SettingsController {
         if (!passwordForm.getNewPassword().equals(passwordForm.getNewPasswordConfirm())) {
             throw new IllegalStateException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         }
-        accountService.updatePassword(account, passwordForm);
+        accountService.updatePassword(account, passwordForm.getNewPassword());
         attributes.addFlashAttribute("message", "비밀번호를 수정하였습니다.");
 
         return "redirect:/settings/password";
+    }
+
+    @GetMapping("/settings/notifications")
+    public String updateNotificationForm(@CurrentUser Account account, Model model) {
+        model.addAttribute("account", account);
+        model.addAttribute(new NotificationForm(account));
+        return "/settings/notifications";
+    }
+
+    @PostMapping("/settings/notifications")
+    public String updateNotification(@CurrentUser Account account, @Valid NotificationForm notificationForm, Errors errors, Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
+            model.addAttribute("account", account);
+            return "/settings/notifications";
+        }
+        accountService.updateNotification(account, notificationForm);
+        attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
+        return "redirect:/settings/notifications";
     }
 }
