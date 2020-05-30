@@ -1,6 +1,7 @@
 package com.studyproject.account;
 
 import com.studyproject.domain.Account;
+import com.studyproject.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -89,5 +90,11 @@ public class AccountService implements UserDetailsService {
     public void completeSignUp(Account account) {
         account.completeSignUp();
         login(account);
+    }
+
+    public void updateProfile(Account account, Profile profile) {
+        account.setBio(profile.getBio());
+        account.setLocation(profile.getLocation());
+        accountRepository.save(account);
     }
 }

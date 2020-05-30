@@ -39,6 +39,8 @@ public class AccountController {
     //회원가입 처리 핸들러
     @PostMapping("/sign-up")
     public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
+
+        //아래처럼만 작성해줘도 form에 들어갔던 데이터들과 errors을 model에 넣어 자동으로 화면에 보여준다
         if (errors.hasErrors()) {
             return "account/sign-up2";
         }
