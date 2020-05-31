@@ -55,4 +55,8 @@ public class Study {
 
     //스터디 종료 여부
     private boolean closed;
+
+    public void addManager(Account account) {
+        this.managers.add(account);
+    }
 }
