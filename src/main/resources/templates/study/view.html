@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body class="bg-light">
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div th:replace="study-fragments.html :: study-info"></div>
+    <div th:replace="study-fragments.html :: study-menu(studyMenu = 'info')"></div>
+
+    <div class="row px-3 justify-content-center">
+        <!-- th:text를 이용하면 fullDescription에 들어있는 html 그대로를 보여주기 때문에 th:utext를 이용함 -->
+        <div class="col-10 pt-3" th:utext="${study.fullDescription}"></div>
+    </div>
+
+    <footer th:replace="fragments.html :: footer"></footer>
+</div>
+<script type="application/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+
+    });
+</script>
+</body>
+</html>
