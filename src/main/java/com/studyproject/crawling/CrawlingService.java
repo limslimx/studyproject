@@ -49,6 +49,8 @@ public class CrawlingService {
             // ---------------------------------- 여기서부터는 상세 url에서의 정보수집 -----------------------------------
             Document doc2 = Jsoup.connect(url).get();
 
+            //소제목
+            String subName = doc2.select("h1.title span.back").text();
             //출간일
             String publicationDate = doc2.select("span.date").text();
             //순위
@@ -60,6 +62,7 @@ public class CrawlingService {
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
                         .searchBy(searchBy)
                         .name(name)
+                        .subName(subName)
                         .detailCategory(detailCategory)
                         .img(img)
                         .author(author)

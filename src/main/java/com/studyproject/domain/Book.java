@@ -22,6 +22,9 @@ public class Book {
     //책 이름
     private String name;
 
+    //소제목
+    private String subName;
+
     //책 이미지
     private String img;
 
