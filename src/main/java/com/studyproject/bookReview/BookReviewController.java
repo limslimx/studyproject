@@ -1,9 +1,11 @@
 package com.studyproject.bookReview;
 
+import com.studyproject.account.AccountRepository;
 import com.studyproject.account.CurrentUser;
 import com.studyproject.book.BookRepository;
 import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
+import com.studyproject.domain.BookReview;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -12,9 +14,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +25,8 @@ public class BookReviewController {
 
     private final BookRepository bookRepository;
     private final BookReviewService bookReviewService;
+    private final AccountRepository accountRepository;
+    private final BookReviewRepository bookReviewRepository;
 
     //독서록 폼 핸들러
     @GetMapping("/bookReview/{id}")
@@ -48,5 +52,25 @@ public class BookReviewController {
         log.info("##############success");
         bookReviewService.createBookReview(account, id, bookReviewForm);
         return "redirect:/";
+    }
+
+    @GetMapping("/bookReview/list/{nickname}")
+    public String bookReviewList(@CurrentUser Account account, @PathVariable String nickname, Model model) {
+        Account byNickname = accountRepository.findByNickname(nickname);
+        if (byNickname == null) {
+            throw new IllegalArgumentException(nickname + "에 해당되는 사용자가 없습니다.");
+        }
+        List<BookReview> bookReviewList = bookReviewRepository.findByAccount(account);
+        model.addAttribute("isOwner", byNickname.equals(account));
+        model.addAttribute("bookReviewList", bookReviewList);
+        return "bookReview/list";
+    }
+
+    @GetMapping("/bookReview/detail/{id}")
+    public String bookReviewDetail(@CurrentUser Account account, @PathVariable Long bookReviewId, Model model) {
+        BookReview bookReviewById = bookReviewRepository.findBookReviewById(bookReviewId);
+
+        model.addAttribute("account", account);
+        return "bookReview/detail";
     }
 }

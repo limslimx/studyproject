@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -23,9 +26,12 @@ public class BookReviewService {
         BookReview bookReview = BookReview.builder()
                 .title(bookReviewForm.getTitle())
                 .content(bookReviewForm.getContent())
+                .createdTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .modifiedTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .account(account)
                 .book(bookById)
                 .build();
+
         bookReviewRepository.save(bookReview);
     }
 }

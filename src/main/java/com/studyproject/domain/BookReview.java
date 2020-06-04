@@ -3,6 +3,7 @@ package com.studyproject.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 @Builder @AllArgsConstructor @NoArgsConstructor
@@ -17,6 +18,10 @@ public class BookReview {
 
     @Lob @Basic(fetch = FetchType.EAGER)
     private String content;
+
+    private String createdTime;
+
+    private String modifiedTime;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
