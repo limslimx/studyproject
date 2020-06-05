@@ -33,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="shortDescription">짧은 소개</label>
-                    <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control" placeholder="스터디에 관해 짧게 소개해주세요." aria-describedby="shortDescriptionHelp" required ="100"></textarea>
+                    <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control" placeholder="스터디에 관해 짧게 소개해주세요." aria-describedby="shortDescriptionHelp" required max="100"></textarea>
                     <small id="shortDescriptionHelp" class="form-text text-muted">
                         100자 이내로 스터디에 관해 짧게 소개해주세요.
                     </small>

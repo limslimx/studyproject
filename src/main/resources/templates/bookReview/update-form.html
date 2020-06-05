@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>독서록 작성하기</h2>
+    </div>
+    <div class="row justify-content-center">
+        <form class="needs-validation col-sm-4" th:action="@{'/bookReview/update/' + ${bookReviewId}}" th:object="${bookReviewForm}" method="post" novalidate>
+
+            <div class="form-group text-center">
+                <img th:src="${book.img}">
+            </div>
+
+            <div class="form-group">
+                <label for="name">책 제목</label>
+                <input id="name" type="text" th:value="${book.name}" class="form-control" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="author">책 저자</label>
+                <input id="author" type="text" th:value="${book.author}" class="form-control" readonly>
+            </div>
+
+
+            <div class="form-group">
+                <label for="title">독서록 제목</label>
+                <input id="title" type="text" th:field="*{title}" class="form-control" placeholder="독서록 제목" aria-describedby="bookReviewTitleHelp" required max="30">
+                <small id="bookReviewTitleHelp" class="form-text text-muted">
+                    30자 이내로 독서록 제목을 적어주세요.
+                </small>
+                <small class="invalid-feedback">1자 이상 30자이하로 입력해주세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">bookReviewTitle Error</small>
+            </div>
+
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea id="content" type="textarea" th:field="*{content}" class="form-control" placeholder="줄거리나 책을 읽고 느낀점을 적어주세요." aria-describedby="contentHelp" required></textarea>
+                <small id="contentHelp" class="form-text text-muted">
+                    줄거리나 책을 읽고 느낀점을 적어주세요.
+                </small>
+                <small class="invalid-feedback">내용을 적어주세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</small>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">독서록 저장하기</button>
+            </div>
+        </form>
+    </div>
+
+    <div th:replace="fragments.html :: footer"></div>
+</div>
+<script th:replace="fragments.html :: form-validation"></script>
+<!-- include summernote js -->
+<script th:replace="book-fragments.html :: editor-script"></script>
+</body>
+</html>
