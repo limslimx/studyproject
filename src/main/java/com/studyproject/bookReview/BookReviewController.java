@@ -94,6 +94,7 @@ public class BookReviewController {
     @PostMapping("/bookReview/update/{bookReviewId}")
     public String bookReviewUpdate(@CurrentUser Account account, @PathVariable Long bookReviewId, @Valid BookReviewForm bookReviewForm, Errors errors, Model model) {
         if (errors.hasErrors()) {
+            //TODO 독서록 수정 시에 내용에 아무것도 입력하지 않으면 오류 바인딩하도록 설정하기
             log.info("##################fail##################");
             model.addAttribute("bookReviewId", bookReviewId);
             model.addAttribute("bookReviewForm", bookReviewForm);
@@ -101,6 +102,10 @@ public class BookReviewController {
             return "bookReview/update-form";
         }
         log.info("##################success##################");
+
+        //TODO 독서록 수정 화면 연결
         return null;
     }
+
+    //TODO 독서록 삭제 기능
 }

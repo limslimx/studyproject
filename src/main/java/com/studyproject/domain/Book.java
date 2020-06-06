@@ -46,4 +46,7 @@ public class Book {
     //책 출판일
     private String publicationDate;
 
+    //책 검색 크롤링인지 베스트셀러 크롤링인지 구분을 위한 값
+    private boolean bestCellar = false;
+
 }

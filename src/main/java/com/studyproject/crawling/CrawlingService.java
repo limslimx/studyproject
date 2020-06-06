@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -77,5 +78,30 @@ public class CrawlingService {
             }
         }
         return bookList;
+    }
+
+    public void getBestCellar() throws IOException {
+        String url = "http://www.kyobobook.co.kr/bestSellerNew/bestseller.laf?mallGb=KOR&linkClass=A&range=1&kind=0&orderClick=DAa&targetPage=1";
+        Document doc = Jsoup.connect(url).get();
+
+        Elements elements = doc.select("ul.list_type01");
+
+        Iterator<Element> bookList = elements.select(" > li").iterator();
+
+        while (bookList.hasNext()) {
+            Element bookInfo = bookList.next();
+            String rank = bookInfo.select("div.cover a strong.rank").text();
+            String img = bookInfo.select("div.cover a img").attr("src");
+            String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
+            String subTitle = bookInfo.select("div.detail div.subtitle").text();
+            String title = bookInfo.select("div.detail div.title a strong").text();
+
+            Document doc2 = Jsoup.connect(bookUrl).get();
+            Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+            String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
+            int categoryCount = bookDetailInfo.select("div.rank a:nth-child(3)").text().indexOf(" ");
+            String category = bookDetailInfo.select("div.rank a:nth-child(3)").text().substring(0, categoryCount).trim();
+            String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
+        }
     }
 }

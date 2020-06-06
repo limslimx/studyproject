@@ -2,7 +2,6 @@ package com.studyproject.book;
 
 import com.studyproject.account.CurrentUser;
 import com.studyproject.book.form.BookSearchForm;
-import com.studyproject.bookReview.BookReviewForm;
 import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,5 +44,12 @@ public class BookController {
         attributes.addFlashAttribute("bookList", bookList);
 
         return "redirect:/book/search";
+    }
+
+    //책 카테고리별 분류 화면 핸들러
+    @GetMapping("/book/category")
+    public String bookCategory(@CurrentUser Account account ,Model model) {
+        model.addAttribute("account", account);
+        return "book/category-form";
     }
 }
