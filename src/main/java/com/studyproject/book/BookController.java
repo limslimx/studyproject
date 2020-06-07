@@ -48,8 +48,17 @@ public class BookController {
 
     //책 카테고리별 분류 화면 핸들러
     @GetMapping("/book/category")
-    public String bookCategory(@CurrentUser Account account ,Model model) {
+    public String bookCategory(@CurrentUser Account account, Model model) {
         model.addAttribute("account", account);
         return "book/category-form";
+    }
+
+    @GetMapping("/book/category/literature")
+    public String bookBestCellarByLiterature(@CurrentUser Account account, Model model) throws Exception {
+        String category = "문학";
+        List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
+        model.addAttribute("account", account);
+        model.addAttribute("bookBestCellarList", bookBestCellarList);
+        return "book/category/literature-list";
     }
 }

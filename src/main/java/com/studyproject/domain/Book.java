@@ -31,6 +31,9 @@ public class Book {
     //책 저자
     private String author;
 
+    //책 카테고리 구분 위한 값 -> 문학, 인문, 실용, 자기개발 4가지로 나눌거임
+    private String category;
+
     //책 상세 카테고리
     private String detailCategory;
 

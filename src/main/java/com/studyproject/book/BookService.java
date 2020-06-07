@@ -52,4 +52,25 @@ public class BookService {
         }
         return bookList;
     }
+
+    public List<Book> getCategoryBookBestCellarInfo(String category) throws Exception {
+        List<Book> bookList = bookRepository.findLiterature(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+
+        if (bookList == null) {
+            bookList = new ArrayList<Book>();
+        }
+        if (bookList.size() == 0) {
+            if (category.equals("문학")) {
+                crawlingService.getCategoryBookBestCellarFromCrawling("B");
+                crawlingService.getCategoryBookBestCellarFromCrawling("C");
+                crawlingService.getCategoryBookBestCellarFromCrawling("F");
+                bookList = bookRepository.findLiterature(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+            }
+
+            if (bookList == null) {
+                bookList = new ArrayList<Book>();
+            }
+        }
+        return bookList;
+    }
 }
