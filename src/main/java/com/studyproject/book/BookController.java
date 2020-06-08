@@ -53,6 +53,7 @@ public class BookController {
         return "book/category-form";
     }
 
+    //문학 베스트셀러 리스트 화면 핸들러
     @GetMapping("/book/category/literature")
     public String bookBestCellarByLiterature(@CurrentUser Account account, Model model) throws Exception {
         String category = "문학";
@@ -60,5 +61,35 @@ public class BookController {
         model.addAttribute("account", account);
         model.addAttribute("bookBestCellarList", bookBestCellarList);
         return "book/category/literature-list";
+    }
+
+    //인문 베스트셀러 리스트 화면 핸들러
+    @GetMapping("/book/category/humanities")
+    public String bookBestCellarByHumanities(@CurrentUser Account account, Model model) throws Exception {
+        String category = "인문";
+        List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
+        model.addAttribute("account", account);
+        model.addAttribute("bookBestCellarList", bookBestCellarList);
+        return "book/category/humanities-list";
+    }
+
+    //실용 베스트셀러 리스트 화면 핸들러
+    @GetMapping("/book/category/real")
+    public String bookBestCellarByReal(@CurrentUser Account account, Model model) throws Exception {
+        String category = "실용";
+        List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
+        model.addAttribute("account", account);
+        model.addAttribute("bookBestCellarList", bookBestCellarList);
+        return "book/category/real-list";
+    }
+
+    //자기계발 베스트셀러 리스트 화면 핸들러
+    @GetMapping("/book/category/selfDevelopment")
+    public String bookBestCellarBySelfDevelopment(@CurrentUser Account account, Model model) throws Exception {
+        String category = "자기계발";
+        List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
+        model.addAttribute("account", account);
+        model.addAttribute("bookBestCellarList", bookBestCellarList);
+        return "book/category/selfDevelopment-list";
     }
 }

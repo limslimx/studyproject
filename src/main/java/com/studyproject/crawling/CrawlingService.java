@@ -46,6 +46,10 @@ public class CrawlingService {
             String author = element.select("div.author a:nth-child(1)").text();
             //태그
             String tag = element.select("div.tag a").text();
+            String[] splitTag = tag.split(" ");
+            if (splitTag.length > 3) {
+                tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
+            }
             //url
             Elements urlElements = element.select("div.title a");
             String url = urlElements.attr("href");
@@ -156,6 +160,10 @@ public class CrawlingService {
 //            log.info("--------------------");
 //            String category = bookDetailInfo.select("div.rank a:nth-child(3)").text().substring(0, categoryCount).trim();
             String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
+            String[] splitTag = tag.split(" ");
+            if (splitTag.length > 3) {
+                tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
+            }
 
             Book book = Book.builder()
                     .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))

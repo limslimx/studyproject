@@ -54,7 +54,17 @@ public class BookService {
     }
 
     public List<Book> getCategoryBookBestCellarInfo(String category) throws Exception {
-        List<Book> bookList = bookRepository.findLiterature(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+        List<Book> bookList = null;
+        if (category.equals("문학")) {
+            bookList = bookRepository.findLiterature(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+        } else if (category.equals("인문")) {
+            bookList = bookRepository.findHumanities(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+        } else if (category.equals("실용")) {
+            bookList = bookRepository.findReal(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+        } else if (category.equals("자기계발")) {
+            bookList = bookRepository.findSelfDevelopment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+        }
+
 
         if (bookList == null) {
             bookList = new ArrayList<Book>();
@@ -65,6 +75,21 @@ public class BookService {
                 crawlingService.getCategoryBookBestCellarFromCrawling("C");
                 crawlingService.getCategoryBookBestCellarFromCrawling("F");
                 bookList = bookRepository.findLiterature(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+            } else if (category.equals("인문")) {
+                crawlingService.getCategoryBookBestCellarFromCrawling("I");
+                crawlingService.getCategoryBookBestCellarFromCrawling("J");
+                crawlingService.getCategoryBookBestCellarFromCrawling("K");
+                crawlingService.getCategoryBookBestCellarFromCrawling("b");
+                bookList = bookRepository.findHumanities(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+            } else if (category.equals("실용")) {
+                crawlingService.getCategoryBookBestCellarFromCrawling("M");
+                crawlingService.getCategoryBookBestCellarFromCrawling("N");
+                crawlingService.getCategoryBookBestCellarFromCrawling("Q");
+                crawlingService.getCategoryBookBestCellarFromCrawling("d");
+                bookList = bookRepository.findReal(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
+            } else if (category.equals("자기계발")) {
+                crawlingService.getCategoryBookBestCellarFromCrawling("c");
+                bookList = bookRepository.findSelfDevelopment(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), true);
             }
 
             if (bookList == null) {
