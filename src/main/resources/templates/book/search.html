@@ -12,7 +12,7 @@
         <h2>책 검색하기</h2>
     </div>
     <div class="row mt-3 justify-content-center">
-        <form class="col-sm-3" th:action="@{/book/search}" th:object="${bookSearchForm}" method="post" novalidate>
+        <form class="col-sm-3" th:action="@{/book/search/save}" th:object="${bookSearchForm}" method="post" novalidate>
             <div class="form-group">
                 <label for="searchBy">검색어</label>
                 <input type="text" id="searchBy" th:field="*{searchBy}" class="form-control" aria-describedby="searchByHelp" required>
@@ -35,9 +35,7 @@
                     <div class="card mb-4 shadow-sm">
                         <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}">
                         <div class="card-body">
-                            <a th:href="@{'/bookReview/detail/' + ${book.id}}" class="text-decoration-none">
-                                <h5 class="card-title context" th:text="${book.name}"></h5>
-                            </a>
+                            <h5 class="card-title context" th:text="${book.name}"></h5>
                             <p class="card-text" th:text="${book.subName}">Short description</p>
                             <p class="card-text context">
                                 <span th:each="tag : ${book.tag}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
@@ -53,7 +51,7 @@
                                 </span>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
+                                <small class="text-muted"> 
                                     <i class="fa fa-user-circle"></i>
                                     <span th:text="${book.author}"></span> 저
                                 </small>
@@ -67,7 +65,7 @@
                             <hr/>
                             <div class="text-center">
                                 <a type="button" th:href="@{'/bookReview/' + ${book.id}}" class="btn btn-primary btn-sm">독서록 작성하기</a>
-                                <a type="button" th:href="@{'/favorBook/' + ${book.id}}" class="btn btn-secondary btn-sm">관심도서 추가하기</a>
+                                <button type="button" th:href="@{'/favorBook/' + ${book.id}}" class="btn btn-secondary btn-sm" id="favorBook_btn">관심도서 추가하기</button>
                             </div>
                         </div>
                     </div>
@@ -76,7 +74,23 @@
         </div>
     </div>
 </div>
+</div>
 <footer th:replace="fragments.html :: footer"></footer>
 <script th:replace="fragments.html :: form-validation"></script>
+<script>
+    $("#favorBook_btn").on("click", function () {
+
+        console.log("test");
+        console.log($("#favorBook_btn").attr("href"));
+        $.ajax({
+            url: $("#favorBook_btn").attr("href"),
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data:
+        })
+
+    });
+</script>
 </body>
 </html>

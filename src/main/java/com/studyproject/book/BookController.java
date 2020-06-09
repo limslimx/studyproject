@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,7 +34,7 @@ public class BookController {
     }
 
     //책 검색하여 크롤링 후 저장하는 기능 핸들러
-    @PostMapping("/book/search")
+    @PostMapping("/book/search/save")
     public String bookSearch(@CurrentUser Account account, @Valid BookSearchForm bookSearchForm, Errors errors, Model model, RedirectAttributes attributes) throws Exception {
         if (errors.hasErrors()) {
             model.addAttribute("account", account);
@@ -44,6 +45,25 @@ public class BookController {
         attributes.addFlashAttribute("bookList", bookList);
 
         return "redirect:/book/search";
+    }
+
+    //관심도서 등록 기능 핸들러
+    @PostMapping("/favorBook/{bookId}")
+    public String favorBook(@CurrentUser Account account, @PathVariable Long bookId, Model model) {
+        boolean validateBookById = bookService.validateBookById(bookId);
+        if (validateBookById) {
+            boolean isFavorBookExists = bookService.validateFavorBookById(bookId, account);
+            if (isFavorBookExists) {
+                bookService.addFavorBook(account, bookId);
+
+            } else {
+                bookService.deleteFavorBook(account, bookId);
+                model.addAttribute("isFavorBookExists", false);
+            }
+        } else {
+            throw new IllegalArgumentException("해당 책이 존재하지 않습니다.");
+        }
+        return "book/search";
     }
 
     //책 카테고리별 분류 화면 핸들러

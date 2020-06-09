@@ -1,7 +1,10 @@
 package com.studyproject.book;
 
 import com.studyproject.crawling.CrawlingService;
+import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
+import com.studyproject.domain.FavorBook;
+import com.studyproject.favorBook.FavorBookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +21,10 @@ public class BookService {
 
     private final RedisBookRepository redisBookRepository;
     private final BookRepository bookRepository;
+    private final FavorBookRepository favorBookRepository;
     private final CrawlingService crawlingService;
 
+    //도서 검색 기능
     public List<Book> getBookInfo(String searchBy) throws Exception {
         List<Book> bookList = null;
         String key = "BOOK_SEARCH_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "_" + searchBy;
@@ -53,6 +58,7 @@ public class BookService {
         return bookList;
     }
 
+    //도서 베스트셀러 조회 기능
     public List<Book> getCategoryBookBestCellarInfo(String category) throws Exception {
         List<Book> bookList = null;
         if (category.equals("문학")) {
@@ -97,5 +103,37 @@ public class BookService {
             }
         }
         return bookList;
+    }
+
+    //관심도서 추가 기능
+    public void addFavorBook(Account account, Long bookId) {
+            Book book = bookRepository.findBookById(bookId);
+            FavorBook favorBook = FavorBook.builder()
+                    .book(book)
+                    .account(account)
+                    .build();
+            favorBookRepository.save(favorBook);
+    }
+
+    //도서가 db에 있는지 확인하는 메서드
+    public boolean validateBookById(Long bookId) {
+        return bookRepository.existsById(bookId);
+    }
+
+    //관심도서가 db에 있는지 확인하는 메서드
+    public boolean validateFavorBookById(Long bookId, Account account) {
+        String bookName = bookRepository.findBookById(bookId).getName();
+        FavorBook favorBook = favorBookRepository.findByBookNameAndAccountId(bookName, account.getId());
+        if (favorBook == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void deleteFavorBook(Account account, Long bookId) {
+        String bookName = bookRepository.findBookById(bookId).getName();
+        FavorBook favorBook = favorBookRepository.findByBookNameAndAccountId(bookName, account.getId());
+        favorBookRepository.delete(favorBook);
     }
 }
