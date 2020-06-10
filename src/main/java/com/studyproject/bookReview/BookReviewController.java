@@ -105,7 +105,7 @@ public class BookReviewController {
         log.info("##################success##################");
 
         //TODO 독서록 수정 화면 연결
-        return null;
+        return "redirect:/bookReview/list/" + bookReview.getAccount().getNickname();
     }
 
     //TODO 독서록 삭제 기능
