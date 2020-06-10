@@ -47,7 +47,6 @@ public class BookReviewController {
         if (errors.hasErrors()) {
             log.info("##############fail");
             model.addAttribute("account", account);
-            model.addAttribute("bookReviewForm", bookReviewForm);
             model.addAttribute("book", bookById);
             return "bookReview/save-form";
         }
@@ -63,18 +62,19 @@ public class BookReviewController {
         if (byNickname == null) {
             throw new IllegalArgumentException(nickname + "에 해당되는 사용자가 없습니다.");
         }
-        List<BookReview> bookReviewList = bookReviewRepository.findByAccount(account);
+        List<BookReview> bookReviewList = bookReviewRepository.findByAccount(byNickname);
         model.addAttribute("bookReviewList", bookReviewList);
+        model.addAttribute("nickname", nickname);
         return "bookReview/list";
     }
 
     //독서록 상세 화면 핸들러
     @GetMapping("/bookReview/detail/{bookReviewId}")
     public String bookReviewDetail(@CurrentUser Account account, @PathVariable Long bookReviewId, Model model) {
-        BookReview bookReviewById = bookReviewRepository.findBookReviewById(bookReviewId);
-        Account accountByBookReview = bookReviewById.getAccount();
+        BookReview bookReview = bookReviewService.getBookReview(bookReviewId);
+        Account accountByBookReview = bookReview.getAccount();
         model.addAttribute("account", account);
-        model.addAttribute("bookReview", bookReviewById);
+        model.addAttribute("bookReview", bookReview);
         model.addAttribute("isOwner", accountByBookReview.equals(account));
         return "bookReview/detail";
     }
@@ -82,25 +82,26 @@ public class BookReviewController {
     //독서록 수정 화면 핸들러
     @GetMapping("/bookReview/update/{bookReviewId}")
     public String bookReviewUpdateForm(@CurrentUser Account account, @PathVariable Long bookReviewId, Model model) {
-        BookReview bookReviewById = bookReviewRepository.findBookReviewById(bookReviewId);
-        Book bookById = bookRepository.findBookById(bookReviewById.getBook().getId());
-        model.addAttribute("book", bookById);
+        BookReview bookReview = bookReviewService.getBookReviewToUpdate(account, bookReviewId);
         model.addAttribute("account", account);
-        model.addAttribute("bookReviewId", bookReviewById.getId());
-        model.addAttribute("bookReviewForm", modelMapper.map(bookReviewById, BookReviewForm.class));
+        model.addAttribute("bookReview", bookReview);
+        model.addAttribute("book", bookRepository.findBookById(bookReview.getBook().getId()));
+        model.addAttribute(modelMapper.map(bookReview, BookReviewForm.class));
         return "bookReview/update-form";
     }
 
     @PostMapping("/bookReview/update/{bookReviewId}")
     public String bookReviewUpdate(@CurrentUser Account account, @PathVariable Long bookReviewId, @Valid BookReviewForm bookReviewForm, Errors errors, Model model) {
+        BookReview bookReview = bookReviewService.getBookReviewToUpdate(account, bookReviewId);
         if (errors.hasErrors()) {
             //TODO 독서록 수정 시에 내용에 아무것도 입력하지 않으면 오류 바인딩하도록 설정하기
             log.info("##################fail##################");
             model.addAttribute("bookReviewId", bookReviewId);
-            model.addAttribute("bookReviewForm", bookReviewForm);
             model.addAttribute("account", account);
             return "bookReview/update-form";
         }
+        bookReviewService.updateBookReview(bookReview, bookReviewForm);
+
         log.info("##################success##################");
 
         //TODO 독서록 수정 화면 연결

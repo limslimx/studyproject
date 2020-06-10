@@ -37,7 +37,7 @@ public class StudyService {
 
     public Study getStudyToUpdate(String path, Account account) {
         Study study = getStudyByPath(path);
-        if (!account.isManagerOf(study)) {
+        if (!account.isManagerOfStudy(study)) {
             throw new AccessDeniedException("권한이 없어서 해당 기능을 사용할 수 없습니다.");
         }
         return study;

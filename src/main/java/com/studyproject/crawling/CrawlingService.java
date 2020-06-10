@@ -49,6 +49,8 @@ public class CrawlingService {
             String[] splitTag = tag.split(" ");
             if (splitTag.length > 3) {
                 tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
+            } else {
+                tag = null;
             }
             //url
             Elements urlElements = element.select("div.title a");
@@ -64,8 +66,10 @@ public class CrawlingService {
             //순위
             String rank = doc2.select("div.rank a:nth-child(3) em").text();
 
+            log.info("tag: " + tag);
+
             //카테고리가 국내도서인 도서만 db에 저장함
-            if (category.equals("국내도서")) {
+            if (category.equals("국내도서") && tag != null) {
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
                         .searchBy(searchBy)
@@ -79,6 +83,7 @@ public class CrawlingService {
                         .tag(tag)
                         .publicationDate(publicationDate)
                         .bestCellar(false)
+                        .category(null)
                         .build();
 
                 bookList.add(book);

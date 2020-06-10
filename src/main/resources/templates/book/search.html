@@ -65,7 +65,7 @@
                             <hr/>
                             <div class="text-center">
                                 <a type="button" th:href="@{'/bookReview/' + ${book.id}}" class="btn btn-primary btn-sm">독서록 작성하기</a>
-                                <button type="button" th:href="@{'/favorBook/' + ${book.id}}" class="btn btn-secondary btn-sm" id="favorBook_btn">관심도서 추가하기</button>
+                                <button th:if="${book.id}" type="button" th:href="@{'/favorBook/' + ${book.id}}" class="btn btn-secondary btn-sm" id="favorBook_btn">관심도서 추가하기</button>
                             </div>
                         </div>
                     </div>

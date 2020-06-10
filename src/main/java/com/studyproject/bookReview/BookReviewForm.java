@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 public class BookReviewForm {
 
     @NotBlank
-    @Length(max = 30)
+    @Length(max = 100)
     private String title;
 
     @NotBlank

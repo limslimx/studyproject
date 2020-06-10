@@ -74,7 +74,11 @@ public class Account {
         return this.emailCheckToken.equals(token);
     }
 
-    public boolean isManagerOf(Study study) {
+    public boolean isManagerOfStudy(Study study) {
         return study.getManagers().contains(this);
+    }
+
+    public boolean isManagerOfBookReview(BookReview bookReview) {
+        return bookReview.getAccount().equals(this);
     }
 }
