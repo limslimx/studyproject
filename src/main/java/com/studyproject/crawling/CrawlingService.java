@@ -1,7 +1,10 @@
 package com.studyproject.crawling;
 
 import com.studyproject.book.BookRepository;
+import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
+import com.studyproject.domain.FavorBook;
+import com.studyproject.favorBook.FavorBookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -25,9 +28,10 @@ import java.util.List;
 public class CrawlingService {
 
     private final BookRepository bookRepository;
+    private final FavorBookRepository favorBookRepository;
 
     //도서 검색 크롤링 메서드
-    public List<Book> getBookInfoFromCrawling(String searchBy) throws IOException {
+    public List<Book> getBookInfoFromCrawling(String searchBy, Account account) throws IOException {
         List<Book> bookList = new ArrayList<Book>();
         String siteUrl = "https://search.kyobobook.co.kr/web/search?vPstrKeyWord=" + searchBy + "&orderClick=LAG";
         Document document = Jsoup.connect(siteUrl).get();
@@ -49,8 +53,6 @@ public class CrawlingService {
             String[] splitTag = tag.split(" ");
             if (splitTag.length > 3) {
                 tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
-            } else {
-                tag = null;
             }
             //url
             Elements urlElements = element.select("div.title a");
@@ -66,29 +68,34 @@ public class CrawlingService {
             //순위
             String rank = doc2.select("div.rank a:nth-child(3) em").text();
 
-            log.info("tag: " + tag);
-
-            //카테고리가 국내도서인 도서만 db에 저장함
-            if (category.equals("국내도서") && tag != null) {
-                Book book = Book.builder()
-                        .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
-                        .searchBy(searchBy)
-                        .name(name)
-                        .subName(subName)
-                        .detailCategory(detailCategory)
-                        .img(img)
-                        .author(author)
-                        .url(url)
-                        .rank(rank)
-                        .tag(tag)
-                        .publicationDate(publicationDate)
-                        .bestCellar(false)
-                        .category(null)
-                        .build();
-
-                bookList.add(book);
-                bookRepository.save(book);
+            boolean favorBookSelected = false;
+            FavorBook favorBook = favorBookRepository.findByBookNameAndAccountId(name, account.getId());
+            if (favorBook != null) {
+                favorBookSelected = true;
             }
+
+                //카테고리가 국내도서인 도서만 db에 저장함
+                if (category.equals("국내도서")) {
+                    Book book = Book.builder()
+                            .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                            .searchBy(searchBy)
+                            .name(name)
+                            .subName(subName)
+                            .detailCategory(detailCategory)
+                            .img(img)
+                            .author(author)
+                            .url(url)
+                            .rank(rank)
+                            .tag(tag)
+                            .publicationDate(publicationDate)
+                            .bestCellar(false)
+                            .category(null)
+                            .favorBookSelected(favorBookSelected)
+                            .build();
+
+                    bookList.add(book);
+                    bookRepository.save(book);
+                }
         }
         return bookList;
     }

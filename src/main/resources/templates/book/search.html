@@ -35,7 +35,7 @@
                     <div class="card mb-4 shadow-sm">
                         <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}">
                         <div class="card-body">
-                            <h5 class="card-title context" th:text="${book.name}"></h5>
+                            <h5 class="card-title context bookName" th:text="${book.name}" th:id="${book.name}"></h5>
                             <p class="card-text" th:text="${book.subName}">Short description</p>
                             <p class="card-text context">
                                 <span th:each="tag : ${book.tag}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
@@ -65,7 +65,8 @@
                             <hr/>
                             <div class="text-center">
                                 <a type="button" th:href="@{'/bookReview/' + ${book.id}}" class="btn btn-primary btn-sm">독서록 작성하기</a>
-                                <button th:if="${book.id}" type="button" th:href="@{'/favorBook/' + ${book.id}}" class="btn btn-secondary btn-sm" id="favorBook_btn">관심도서 추가하기</button>
+                                <button th:if="${!book.favorBookSelected}" type="button" th:id="${book.name}" onclick="favorBook.add_btn(this.id)" class="btn btn-secondary btn-sm favorBookAdd_btn">관심도서 추가하기</button>
+                                <button th:if="${book.favorBookSelected}" type="button" th:id="${book.name}" onclick="favorBook.delete_btn(this.id)" class="btn btn-secondary btn-sm favorBookDelete_btn">관심도서 삭제하기</button>
                             </div>
                         </div>
                     </div>
@@ -77,20 +78,40 @@
 </div>
 <footer th:replace="fragments.html :: footer"></footer>
 <script th:replace="fragments.html :: form-validation"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-    $("#favorBook_btn").on("click", function () {
+    var favorBook = {
+        add_btn : function (bookName) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
-        console.log("test");
-        console.log($("#favorBook_btn").attr("href"));
-        $.ajax({
-            url: $("#favorBook_btn").attr("href"),
-            method: "POST",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data:
-        })
+            $.ajax({
+                url: "/favorBook/add/" + bookName,
+                type: "POST",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                }
+            }).done(function (result) {
+                alert(result + "를 관심도서에 추가하였습니다.");
+                location.href = "/";
+            });
+        },
+        delete_btn: function (bookName) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
-    });
+            $.ajax({
+                url: "/favorBook/delete/" + bookName,
+                type: "POST",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                }
+            }).done(function (result) {
+                alert(result + "를 관심도서에서 삭제하였습니다.");
+                location.href = "/";
+            });
+        }
+    }
 </script>
 </body>
 </html>

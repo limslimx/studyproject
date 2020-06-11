@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,35 +25,51 @@ public class BookService {
     private final FavorBookRepository favorBookRepository;
     private final CrawlingService crawlingService;
 
-    //도서 검색 기능
-    public List<Book> getBookInfo(String searchBy) throws Exception {
-        List<Book> bookList = null;
-        String key = "BOOK_SEARCH_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "_" + searchBy;
+//    //redis를 이용한 도서 검색 기능
+//    public List<Book> getBookInfo(String searchBy) throws Exception {
+//        List<Book> bookList = null;
+//        String key = "BOOK_SEARCH_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "_" + searchBy;
+//
+//        //redis에 키가 존재하면 redis에서 값 가져오고 ttl 설정함. redis에 키가 존재하지 않으면 db에서 값 가져오고 그래도 없으면 크롤링해서 다시 가져와서 db에 넣고 조회함
+//        if (redisBookRepository.getExists(key)) {
+//            bookList = redisBookRepository.getBookInfoFromRedis(key);
+//
+//            if (bookList == null) {
+//                bookList = new ArrayList<Book>();
+//            }
+//            redisBookRepository.setTimeOutHour(key, 6);
+//        } else {
+//            bookList = bookRepository.findBySearchDateAndSearchBy(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), searchBy);
+//
+//            if (bookList == null) {
+//                bookList = new ArrayList<Book>();
+//            }
+//            if (bookList.size() == 0) {
+//                bookList = crawlingService.getBookInfoFromCrawling(searchBy);
+//
+//                if (bookList == null) {
+//                    bookList = new ArrayList<Book>();
+//                }
+//            }
+//            if (bookList.size() > 0) {
+//                redisBookRepository.setBookInfoInRedis(key, bookList);
+//                redisBookRepository.setTimeOutHour(key, 6);
+//            }
+//        }
+//        return bookList;
+//    }
 
-        //redis에 키가 존재하면 redis에서 값 가져오고 ttl 설정함. redis에 키가 존재하지 않으면 db에서 값 가져오고 그래도 없으면 크롤링해서 다시 가져와서 db에 넣고 조회함
-        if (redisBookRepository.getExists(key)) {
-            bookList = redisBookRepository.getBookInfoFromRedis(key);
+    public List<Book> getBookInfo(String searchBy, Account account) throws IOException {
+        List<Book> bookList = bookRepository.findBySearchDateAndSearchBy(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), searchBy);
+
+        if (bookList == null) {
+            bookList = new ArrayList<Book>();
+        }
+        if (bookList.size() == 0) {
+            bookList = crawlingService.getBookInfoFromCrawling(searchBy, account);
 
             if (bookList == null) {
                 bookList = new ArrayList<Book>();
-            }
-            redisBookRepository.setTimeOutHour(key, 6);
-        } else {
-            bookList = bookRepository.findBySearchDateAndSearchBy(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), searchBy);
-
-            if (bookList == null) {
-                bookList = new ArrayList<Book>();
-            }
-            if (bookList.size() == 0) {
-                bookList = crawlingService.getBookInfoFromCrawling(searchBy);
-
-                if (bookList == null) {
-                    bookList = new ArrayList<Book>();
-                }
-            }
-            if (bookList.size() > 0) {
-                redisBookRepository.setBookInfoInRedis(key, bookList);
-                redisBookRepository.setTimeOutHour(key, 6);
             }
         }
         return bookList;
@@ -105,34 +122,31 @@ public class BookService {
         return bookList;
     }
 
+    //해당 책이 Book에 존재하는지 확인하는 메서드
+    private Book bookExistsValidation(String bookName) {
+        Book book = bookRepository.findOneByNameAndSearchDate(bookName, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        if (book == null) {
+            throw new IllegalArgumentException(bookName + "라는 이름을 가진 책이 존재하지 않습니다.");
+        }
+        return book;
+    }
+
     //관심도서 추가 기능
-    public void addFavorBook(Account account, Long bookId) {
-            Book book = bookRepository.findBookById(bookId);
+    public void addFavorBook(Account account, String bookName) {
+        Book book = bookExistsValidation(bookName);
+        book.setFavorBookSelected(true);
             FavorBook favorBook = FavorBook.builder()
+                    .bookName(bookName)
                     .book(book)
                     .account(account)
                     .build();
             favorBookRepository.save(favorBook);
     }
 
-    //도서가 db에 있는지 확인하는 메서드
-    public boolean validateBookById(Long bookId) {
-        return bookRepository.existsById(bookId);
-    }
-
-    //관심도서가 db에 있는지 확인하는 메서드
-    public boolean validateFavorBookById(Long bookId, Account account) {
-        String bookName = bookRepository.findBookById(bookId).getName();
-        FavorBook favorBook = favorBookRepository.findByBookNameAndAccountId(bookName, account.getId());
-        if (favorBook == null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void deleteFavorBook(Account account, Long bookId) {
-        String bookName = bookRepository.findBookById(bookId).getName();
+    //관심도서 삭제 기능
+    public void deleteFavorBook(Account account, String bookName) {
+        Book book = bookExistsValidation(bookName);
+        book.setFavorBookSelected(false);
         FavorBook favorBook = favorBookRepository.findByBookNameAndAccountId(bookName, account.getId());
         favorBookRepository.delete(favorBook);
     }

@@ -6,6 +6,8 @@
 <!-- head -->
 <head th:fragment="head">
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Book</title>
     <!-- 서머노트에서 원하는 글씨체를 사용하기 위함 -->
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">

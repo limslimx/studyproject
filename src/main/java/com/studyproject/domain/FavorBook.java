@@ -16,6 +16,9 @@ public class FavorBook {
     @Column(name = "favorBook_id")
     private Long id;
 
+    @Column(unique = true)
+    private String bookName;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;

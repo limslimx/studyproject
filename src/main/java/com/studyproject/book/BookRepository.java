@@ -28,4 +28,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findSelfDevelopment(@Param("searchDate") String searchDate, @Param("bestCellar") boolean bestCellar);
 
     int countBySearchDateAndDetailCategoryAndBestCellar(String searchDate, String detailCategory, boolean bestCellar);
+
+    Book findOneByNameAndSearchDate(String bookName, String yyyyMMdd);
 }

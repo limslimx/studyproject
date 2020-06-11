@@ -31,6 +31,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "소설", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "문학";
@@ -91,6 +92,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -100,6 +102,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "에세이", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "문학";
@@ -160,6 +163,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -169,6 +173,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "시", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "문학";
@@ -229,6 +234,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -238,6 +244,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "인문", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "인문";
@@ -298,6 +305,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -307,6 +315,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "정치사회", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "인문";
@@ -367,6 +376,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -376,6 +386,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "경제경영", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "인문";
@@ -436,6 +447,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -445,6 +457,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "역사문화", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "인문";
@@ -505,6 +518,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -514,6 +528,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "교양과학", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "실용";
@@ -574,6 +589,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -583,6 +599,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "외국어", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "실용";
@@ -643,6 +660,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -652,6 +670,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "예술", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "실용";
@@ -712,6 +731,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -721,6 +741,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "여행", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "실용";
@@ -781,6 +802,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 
@@ -790,6 +812,7 @@ public class BookCrawlingScheduler {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "자기계발", true);
         log.info("#######count: "+count);
         if (count == 0) {
+            log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "자기계발";
@@ -850,6 +873,7 @@ public class BookCrawlingScheduler {
                 log.info("--------------------");
                 i++;
             }
+            log.info("---------------crawling end---------------");
         }
     }
 }
