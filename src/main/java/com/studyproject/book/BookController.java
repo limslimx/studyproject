@@ -4,6 +4,7 @@ import com.studyproject.account.CurrentUser;
 import com.studyproject.book.form.BookSearchForm;
 import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
+import com.studyproject.favorBook.FavorBookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class BookController {
 
     private final BookService bookService;
     private final BookRepository bookRepository;
+    private final FavorBookRepository favorBookRepository;
 
     //책 검색 폼 핸들러
     @GetMapping("/book/search")
@@ -43,7 +45,12 @@ public class BookController {
             return "/book/search";
         }
         List<Book> bookList = bookService.getBookInfo(bookSearchForm.getSearchBy(), account);
+        List<String> favorBookList = favorBookRepository.findByAccountId(account.getId());
+        for (int i = 0; i < favorBookList.size(); i++) {
+            log.info(favorBookList.get(i));
+        }
         attributes.addFlashAttribute("bookList", bookList);
+        attributes.addFlashAttribute("favorBookList", favorBookList);
 
         return "redirect:/book/search";
     }
