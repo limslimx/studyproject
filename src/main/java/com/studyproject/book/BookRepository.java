@@ -29,5 +29,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     int countBySearchDateAndDetailCategoryAndBestCellar(String searchDate, String detailCategory, boolean bestCellar);
 
-    Book findOneByNameAndSearchDate(String bookName, String yyyyMMdd);
+    Book findTop1ByNameAndSearchDate(String bookName, String searchDate);
 }
