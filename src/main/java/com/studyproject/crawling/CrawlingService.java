@@ -68,12 +68,6 @@ public class CrawlingService {
             //순위
             String rank = doc2.select("div.rank a:nth-child(3) em").text();
 
-            boolean favorBookSelected = false;
-            FavorBook favorBook = favorBookRepository.findByBookNameAndAccountId(name, account.getId());
-            if (favorBook != null) {
-                favorBookSelected = true;
-            }
-
                 //카테고리가 국내도서인 도서만 db에 저장함
                 if (category.equals("국내도서")) {
                     Book book = Book.builder()
@@ -90,7 +84,6 @@ public class CrawlingService {
                             .publicationDate(publicationDate)
                             .bestCellar(false)
                             .category(null)
-                            .favorBookSelected(favorBookSelected)
                             .build();
 
                     bookList.add(book);

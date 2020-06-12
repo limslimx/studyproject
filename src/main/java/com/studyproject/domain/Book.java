@@ -55,7 +55,4 @@ public class Book {
 
     //책 검색 크롤링인지 베스트셀러 크롤링인지 구분을 위한 값
     private boolean bestCellar = false;
-
-    //책 크롤링 시에 관심도서에 추가되었는지의 여부를 확인하기 위한 값
-    private boolean favorBookSelected = false;
 }

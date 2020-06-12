@@ -78,40 +78,6 @@
 </div>
 <footer th:replace="fragments.html :: footer"></footer>
 <script th:replace="fragments.html :: form-validation"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-    var favorBook = {
-        add_btn : function (bookName) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
-            $.ajax({
-                url: "/favorBook/add/" + bookName,
-                type: "POST",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                }
-            }).done(function (result) {
-                alert(result + "를 관심도서에 추가하였습니다.");
-                location.href = "/";
-            });
-        },
-        delete_btn: function (bookName) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
-            $.ajax({
-                url: "/favorBook/delete/" + bookName,
-                type: "POST",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                }
-            }).done(function (result) {
-                alert(result + "를 관심도서에서 삭제하였습니다.");
-                location.href = "/";
-            });
-        }
-    }
-</script>
+<script th:replace="book-fragments.html :: favorBook-event"></script>
 </body>
 </html>

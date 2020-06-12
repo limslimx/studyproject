@@ -134,7 +134,6 @@ public class BookService {
     //관심도서 추가 기능
     public void addFavorBook(Account account, String bookName) {
         Book book = bookExistsValidation(bookName);
-        book.setFavorBookSelected(true);
             FavorBook favorBook = FavorBook.builder()
                     .bookName(bookName)
                     .book(book)
@@ -146,7 +145,6 @@ public class BookService {
     //관심도서 삭제 기능
     public void deleteFavorBook(Account account, String bookName) {
         Book book = bookExistsValidation(bookName);
-        book.setFavorBookSelected(false);
         FavorBook favorBook = favorBookRepository.findByBookNameAndAccountId(bookName, account.getId());
         favorBookRepository.delete(favorBook);
     }

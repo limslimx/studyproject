@@ -48,7 +48,8 @@
                             <hr/>
                             <div class="text-center">
                                 <a type="button" th:href="@{'/bookReview/' + ${book.id}}" class="btn btn-primary btn-sm">독서록 작성하기</a>
-                                <a type="button" th:href="@{'/favorBook/' + ${book.id}}" class="btn btn-secondary btn-sm">관심도서 추가하기</a>
+                                <button th:if="${!#lists.contains(favorBookList, book.name)}" type="button" th:id="${book.name}" onclick="favorBook.add_btn(this.id)" class="btn btn-secondary btn-sm favorBookAdd_btn">관심도서 추가하기</button>
+                                <button th:if="${#lists.contains(favorBookList, book.name)}" type="button" th:id="${book.name}" onclick="favorBook.delete_btn(this.id)" class="btn btn-secondary btn-sm favorBookDelete_btn">관심도서 삭제하기</button>
                             </div>
                         </div>
                     </div>
@@ -59,5 +60,6 @@
 </div>
 <footer th:replace="fragments.html :: footer"></footer>
 <script th:replace="fragments.html :: form-validation"></script>
+<script th:replace="book-fragments.html :: favorBook-event"></script>
 </body>
 </html>
