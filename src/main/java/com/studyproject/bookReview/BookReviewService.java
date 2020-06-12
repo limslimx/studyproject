@@ -24,6 +24,7 @@ public class BookReviewService {
     private final BookReviewRepository bookReviewRepository;
     private final ModelMapper modelMapper;
 
+    //독서록 저장 메서드
     public void createBookReview(Account account, Long id, BookReviewForm bookReviewForm) {
         Book bookById = bookRepository.findBookById(id);
         BookReview bookReview = BookReview.builder()
@@ -38,6 +39,7 @@ public class BookReviewService {
         bookReviewRepository.save(bookReview);
     }
 
+    //독서록 조회 메서드
     public BookReview getBookReviewToUpdate(Account account, Long bookReviewId) {
         BookReview bookReview = this.getBookReview(bookReviewId);
         if (!account.isManagerOfBookReview(bookReview)) {
@@ -46,6 +48,7 @@ public class BookReviewService {
         return bookReview;
     }
 
+    //독서록 조회 메서드
     public BookReview getBookReview(Long bookReviewId) {
         BookReview bookReview = bookReviewRepository.findBookReviewById(bookReviewId);
         if (bookReview == null) {
@@ -54,7 +57,26 @@ public class BookReviewService {
         return bookReview;
     }
 
+    //독서록 수정 메서드
     public void updateBookReview(BookReview bookReview, BookReviewForm bookReviewForm) {
         modelMapper.map(bookReviewForm, bookReview);
+    }
+
+    //독서록 삭제 메서드
+    public void deleteBookReview(Long bookReviewId, Account account) {
+        bookReviewValidation(bookReviewId, account);
+        BookReview bookReview = bookReviewRepository.findBookReviewById(bookReviewId);
+        bookReviewRepository.delete(bookReview);
+    }
+
+    //독서록 유효성 검사
+    public void bookReviewValidation(Long bookReviewId, Account account) {
+        BookReview bookReviewById = bookReviewRepository.findBookReviewById(bookReviewId);
+        if (bookReviewById == null) {
+            throw new IllegalArgumentException("해당하는 독서록이 없습니다.");
+        }
+        if (!bookReviewById.getAccount().equals(account)) {
+            throw new IllegalArgumentException("독서록 삭제 권한이 없습니다.");
+        }
     }
 }

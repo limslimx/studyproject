@@ -26,7 +26,7 @@
                 <hr class="my-4">
                 <div class="text-center" th:if="${isOwner}">
                     <a class="btn btn-primary" th:href="@{'/bookReview/update/'+${bookReview.id}}" role="button">수정</a>
-                    <a class="btn btn-danger" role="button">삭제</a>
+                    <a class="btn btn-danger" th:href="@{'/bookReview/delete/'+${bookReview.id}}" role="button">삭제</a>
                 </div>
             </div>
         </div>

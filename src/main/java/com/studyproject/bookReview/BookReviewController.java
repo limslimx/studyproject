@@ -15,6 +15,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -90,6 +91,7 @@ public class BookReviewController {
         return "bookReview/update-form";
     }
 
+    //독서록 수정 기능 핸들러
     @PostMapping("/bookReview/update/{bookReviewId}")
     public String bookReviewUpdate(@CurrentUser Account account, @PathVariable Long bookReviewId, @Valid BookReviewForm bookReviewForm, Errors errors, Model model) {
         BookReview bookReview = bookReviewService.getBookReviewToUpdate(account, bookReviewId);
@@ -104,9 +106,14 @@ public class BookReviewController {
 
         log.info("##################success##################");
 
-        //TODO 독서록 수정 화면 연결
-        return "redirect:/bookReview/list/" + bookReview.getAccount().getNickname();
+        return "redirect:/bookReview/detail/" + bookReview.getId();
     }
 
-    //TODO 독서록 삭제 기능
+    //독서록 삭제 기능 핸들러
+    @GetMapping("/bookReview/delete/{bookReviewId}")
+    public String bookReviewDelete(@CurrentUser Account account, @PathVariable Long bookReviewId, RedirectAttributes attributes) {
+        bookReviewService.deleteBookReview(bookReviewId, account);
+        attributes.addFlashAttribute("message", "독서록을 삭제하였습니다.");
+        return "redirect:/bookReview/list/"+account.getNickname();
+    }
 }
