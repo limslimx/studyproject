@@ -18,7 +18,7 @@
                     <div class="card mb-4 shadow-sm">
                         <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}">
                         <div class="card-body">
-                            <h5 class="card-title context" th:text="${book.name}"></h5>
+                            <h5 class="card-title context" th:text="${book.rank+'. '+book.name}"></h5>
                             <p class="card-text" th:text="${book.subName}">Short description</p>
                             <p class="card-text context">
                                 <span th:each="tag : ${book.tag}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">

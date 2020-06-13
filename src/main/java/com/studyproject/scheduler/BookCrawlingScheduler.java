@@ -61,6 +61,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -75,6 +77,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -89,6 +92,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -132,6 +136,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -146,6 +152,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -160,6 +167,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -203,6 +211,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -217,6 +227,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -231,6 +242,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -274,6 +286,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -288,6 +302,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -302,6 +317,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -345,6 +361,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -359,6 +377,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -373,6 +392,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -416,6 +436,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -430,6 +452,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -444,6 +467,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -487,6 +511,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -501,6 +527,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -515,6 +542,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -558,6 +586,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -572,6 +602,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -586,6 +617,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -629,6 +661,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -643,6 +677,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -657,6 +692,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -700,6 +736,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -714,6 +752,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -728,6 +767,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -771,6 +811,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -785,6 +827,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -799,6 +842,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
@@ -842,6 +886,8 @@ public class BookCrawlingScheduler {
                 if (splitTag.length > 3) {
                     tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
                 }
+                int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
+                String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
 
                 Book book = Book.builder()
                         .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
@@ -856,6 +902,7 @@ public class BookCrawlingScheduler {
                         .rank(rank)
                         .tag(tag)
                         .bestCellar(true)
+                        .publicationDate(publicationDate)
                         .build();
                 bookRepository.save(book);
                 bookList.add(book);
@@ -870,6 +917,7 @@ public class BookCrawlingScheduler {
                 log.info("author: " + author);
                 log.info("url: " + bookUrl);
                 log.info("tag: " + tag);
+                log.info("publicationDate: " + publicationDate);
                 log.info("--------------------");
                 i++;
             }
