@@ -12,5 +12,7 @@ public interface FavorBookRepository extends JpaRepository<FavorBook, Long> {
     FavorBook findByBookNameAndAccountId(String bookName, Long accountId);
 
     @Query("select fb.bookName from FavorBook fb where fb.account.id=:id")
-    List<String> findByAccountId(@Param("id") Long id);
+    List<String> findBookNameByAccountId(@Param("id") Long id);
+
+    List<FavorBook> findFavorBookByAccountId(Long accountId);
 }

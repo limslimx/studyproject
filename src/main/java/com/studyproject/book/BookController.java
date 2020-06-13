@@ -45,7 +45,7 @@ public class BookController {
             return "/book/search";
         }
         List<Book> bookList = bookService.getBookInfo(bookSearchForm.getSearchBy(), account);
-        List<String> favorBookList = favorBookRepository.findByAccountId(account.getId());
+        List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
 
         attributes.addFlashAttribute("bookList", bookList);
         attributes.addFlashAttribute("favorBookList", favorBookList);
@@ -65,7 +65,7 @@ public class BookController {
     public String bookBestCellarByLiterature(@CurrentUser Account account, Model model) throws Exception {
         String category = "문학";
         List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
-        List<String> favorBookList = favorBookRepository.findByAccountId(account.getId());
+        List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
         for (int i = 0; i < favorBookList.size(); i++) {
             log.info(favorBookList.get(i));
         }
@@ -80,7 +80,7 @@ public class BookController {
     public String bookBestCellarByHumanities(@CurrentUser Account account, Model model) throws Exception {
         String category = "인문";
         List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
-        List<String> favorBookList = favorBookRepository.findByAccountId(account.getId());
+        List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
         model.addAttribute("account", account);
         model.addAttribute("bookBestCellarList", bookBestCellarList);
         model.addAttribute("favorBookList", favorBookList);
@@ -92,7 +92,7 @@ public class BookController {
     public String bookBestCellarByReal(@CurrentUser Account account, Model model) throws Exception {
         String category = "실용";
         List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
-        List<String> favorBookList = favorBookRepository.findByAccountId(account.getId());
+        List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
         model.addAttribute("account", account);
         model.addAttribute("bookBestCellarList", bookBestCellarList);
         model.addAttribute("favorBookList", favorBookList);
@@ -104,7 +104,7 @@ public class BookController {
     public String bookBestCellarBySelfDevelopment(@CurrentUser Account account, Model model) throws Exception {
         String category = "자기계발";
         List<Book> bookBestCellarList = bookService.getCategoryBookBestCellarInfo(category);
-        List<String> favorBookList = favorBookRepository.findByAccountId(account.getId());
+        List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
         model.addAttribute("account", account);
         model.addAttribute("bookBestCellarList", bookBestCellarList);
         model.addAttribute("favorBookList", favorBookList);
