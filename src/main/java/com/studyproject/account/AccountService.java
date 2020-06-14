@@ -1,7 +1,11 @@
 package com.studyproject.account;
 
+import com.studyproject.bookReview.BookReviewRepository;
 import com.studyproject.config.AppProperties;
 import com.studyproject.domain.Account;
+import com.studyproject.domain.BookReview;
+import com.studyproject.domain.FavorBook;
+import com.studyproject.favorBook.FavorBookRepository;
 import com.studyproject.mail.EmailMessage;
 import com.studyproject.mail.EmailService;
 import com.studyproject.settings.NotificationForm;
@@ -34,6 +38,8 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
+    private final FavorBookRepository favorBookRepository;
+    private final BookReviewRepository bookReviewRepository;
 
     /*accountRepository.save()를 실행한 후에는 newAccount는 영속상태가 아닌 detached상태인데
    그렇기 때문에 newAccount.generateEmailCheckToken()을 실행해도 영속상태가 아니기 때문에 변경감지가 일어나지 않고 db에 값이 저장되지 않는다.
@@ -153,5 +159,22 @@ public class AccountService implements UserDetailsService {
                 .message(message)
                 .build();
         emailService.sendEmail(emailMessage);
+    }
+
+    public boolean deleteValidate(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        boolean validation = true;
+        if (account == null) {
+            validation = false;
+            throw new IllegalArgumentException(nickname + "에 해당하는 회원정보가 없습니다.");
+        }
+        return validation;
+    }
+
+    public void deleteAccount(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        favorBookRepository.updateToNull(account.getId());
+        bookReviewRepository.updateToNull(account.getId());
+        accountRepository.delete(account);
     }
 }

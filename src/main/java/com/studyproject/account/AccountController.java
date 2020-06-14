@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -152,5 +149,14 @@ public class AccountController {
         }
         accountService.updatePassword(account, passwordForm.getNewPassword());
         return "redirect:/";
+    }
+
+    @PostMapping("/delete/account/{nickname}")
+    public @ResponseBody boolean deleteAccount(@PathVariable String nickname) {
+        boolean validation = accountService.deleteValidate(nickname);
+        if (validation) {
+            accountService.deleteAccount(nickname);
+        }
+        return validation;
     }
 }

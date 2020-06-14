@@ -3,6 +3,9 @@ package com.studyproject.bookReview;
 import com.studyproject.domain.Account;
 import com.studyproject.domain.BookReview;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,4 +17,8 @@ public interface BookReviewRepository extends JpaRepository<BookReview, Long> {
     List<BookReview> findByAccount(Account account);
 
     BookReview findBookReviewById(Long id);
+
+    @Modifying
+    @Query("update BookReview br set br.account.id=null where br.account.id=:accountId")
+    void updateToNull(@Param("accountId") Long accountId);
 }
