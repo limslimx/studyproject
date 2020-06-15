@@ -25,7 +25,6 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-    private final BookRepository bookRepository;
     private final FavorBookRepository favorBookRepository;
 
     //책 검색 폼 핸들러
@@ -44,7 +43,7 @@ public class BookController {
             model.addAttribute("bookSearchForm", bookSearchForm);
             return "/book/search";
         }
-        List<Book> bookList = bookService.getBookInfo(bookSearchForm.getSearchBy(), account);
+        List<Book> bookList = bookService.getBookInfo(bookSearchForm.getSearchBy());
         List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
 
         attributes.addFlashAttribute("bookList", bookList);

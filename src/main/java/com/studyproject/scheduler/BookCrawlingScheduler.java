@@ -51,10 +51,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -126,10 +126,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -201,10 +201,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -276,10 +276,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -351,10 +351,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -426,10 +426,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -501,10 +501,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -576,10 +576,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -651,10 +651,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -726,10 +726,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -801,10 +801,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");
@@ -876,10 +876,10 @@ public class BookCrawlingScheduler {
                 String img = bookInfo.select("div.cover a img").attr("src");
                 String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
                 String subTitle = bookInfo.select("div.detail div.subtitle").text();
-                String title = bookInfo.select("div.detail div.title a strong").text();
 
                 Document doc2 = Jsoup.connect(bookUrl).get();
                 Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+                String title = bookDetailInfo.select("h1.title strong").text();
                 String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
                 String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
                 String[] splitTag = tag.split(" ");

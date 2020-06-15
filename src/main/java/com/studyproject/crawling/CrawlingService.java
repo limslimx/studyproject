@@ -31,14 +31,13 @@ public class CrawlingService {
     private final FavorBookRepository favorBookRepository;
 
     //도서 검색 크롤링 메서드
-    public List<Book> getBookInfoFromCrawling(String searchBy, Account account) throws IOException {
+    public List<Book> getBookInfoFromCrawling(String searchBy) throws IOException {
         List<Book> bookList = new ArrayList<Book>();
         String siteUrl = "https://search.kyobobook.co.kr/web/search?vPstrKeyWord=" + searchBy + "&orderClick=LAG";
         Document document = Jsoup.connect(siteUrl).get();
         Elements elements = document.select("tbody#search_list tr");
         for (Element element : elements) {
-            //제목
-            String name = element.select("div.title strong").text();
+
             //카테고리 --> db에는 안넣을거지만, 카테고리가 국내도서인 도서만 db에 insert하기 위한 구분값
             String category = element.select("div.category").text();
             //이미지
@@ -61,6 +60,8 @@ public class CrawlingService {
             // ---------------------------------- 여기서부터는 상세 url에서의 정보수집 -----------------------------------
             Document doc2 = Jsoup.connect(url).get();
 
+            //제목
+            String name = doc2.select("div.box_detail_point h1.title strong").text();
             //소제목
             String subName = doc2.select("h1.title span.back").text();
             //출간일
@@ -152,10 +153,10 @@ public class CrawlingService {
             String img = bookInfo.select("div.cover a img").attr("src");
             String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
             String subTitle = bookInfo.select("div.detail div.subtitle").text();
-            String title = bookInfo.select("div.detail div.title a strong").text();
 
             Document doc2 = Jsoup.connect(bookUrl).get();
             Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
+            String title = doc2.select("h1.title strong").text();
             String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
 //            int categoryCount = bookDetailInfo.select("div.rank a:nth-child(3)").text().indexOf(" ");
 //            log.info("--------------------");
