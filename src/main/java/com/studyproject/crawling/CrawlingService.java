@@ -61,7 +61,7 @@ public class CrawlingService {
             Document doc2 = Jsoup.connect(url).get();
 
             //제목
-            String name = doc2.select("div.box_detail_point h1.title strong").text();
+            String name = doc2.select("div.box_detail_point h1.title > strong").text();
             //소제목
             String subName = doc2.select("h1.title span.back").text();
             //출간일
@@ -156,7 +156,7 @@ public class CrawlingService {
 
             Document doc2 = Jsoup.connect(bookUrl).get();
             Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
-            String title = doc2.select("h1.title strong").text();
+            String title = doc2.select("h1.title > strong").text();
             String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
 //            int categoryCount = bookDetailInfo.select("div.rank a:nth-child(3)").text().indexOf(" ");
 //            log.info("--------------------");

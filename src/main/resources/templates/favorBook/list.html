@@ -20,10 +20,23 @@
                         <div class="card-body">
                             <h5 class="card-title context" th:text="${favorBook.book.name}"></h5>
                             <p th:if="${favorBook.book.subName!=null}" class="card-text" th:text="${favorBook.book.subName}"></p>
+                            <p class="card-text context">
+                                <span th:each="tag : ${favorBook.book.tag}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a th:href="@{'/search/tag/' + ${tag}}" class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <span th:text="${tag}">Tag</span>
+                                    </a>
+                                </span>
+                                <br/>
+                                <span th:each="category: ${favorBook.book.detailCategory}" class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a th:href="@{'/search/zone/' + ${category}}" class="text-decoration-none text-white">
+                                        <i class="fas fa-th-list"></i> <span th:text="${category}" class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
                                     <i class="fa fa-user-circle"></i>
-                                    <span th:text="${#authentication.name}"></span>
+                                    <span th:text="${favorBook.book.author}"></span> 저
                                 </small>
                             </div>
                         </div>
