@@ -28,7 +28,7 @@
                                 </span>
                                 <br/>
                                 <span th:each="category: ${book.detailCategory}" class="font-weight-light text-monospace badge badge-primary mr-3">
-                                    <a th:href="@{'/search/zone/' + ${category}}" class="text-decoration-none text-white">
+                                    <a th:href="@{'/book/category/' + ${book.detailCategory}}" class="text-decoration-none text-white">
                                         <i class="fas fa-th-list"></i> <span th:text="${category}" class="text-white">City</span>
                                     </a>
                                 </span>

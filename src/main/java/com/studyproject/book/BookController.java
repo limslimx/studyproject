@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +27,7 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final BookRepository bookRepository;
     private final FavorBookRepository favorBookRepository;
 
     //책 검색 폼 핸들러
@@ -122,5 +125,14 @@ public class BookController {
     public @ResponseBody String favorBookDelete(@CurrentUser Account account, @PathVariable String bookName, Model model) {
         bookService.deleteFavorBook(account, bookName);
         return bookName;
+    }
+
+    @GetMapping("/book/category/{detailCategory}")
+    public String bookCategoryList(@CurrentUser Account account, @PathVariable String detailCategory, Model model) {
+        List<Book> bookList = bookRepository.findBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), detailCategory, false);
+        List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
+        model.addAttribute("bookList", bookList);
+        model.addAttribute("favorBookList", favorBookList);
+        return "book/category/category-list";
     }
 }

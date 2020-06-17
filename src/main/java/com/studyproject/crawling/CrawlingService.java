@@ -106,10 +106,10 @@ public class CrawlingService {
             detailCategory = "소설";
         } else if (linkClass.equals("C")) {
             categoryValue = "문학";
-            detailCategory = "에세이";
+            detailCategory = "시에세이";
         } else if (linkClass.equals("F")) {
             categoryValue = "문학";
-            detailCategory = "시";
+            detailCategory = "시에세이";
         } else if (linkClass.equals("I")) {
             categoryValue = "인문";
             detailCategory = "인문";
