@@ -25,6 +25,8 @@
                 <p th:utext="${bookReview.content}"></p>
                 <hr class="my-4">
                 <div class="text-center" th:if="${isOwner}">
+                    <button class="btn btn-success" type="button" th:if="${!bookReview.open}" th:href="@{'/bookReview/open/'+${bookReview.id}}" th:id="${bookReview.id}" onclick="bookReview.open(this.id)">공개</button>
+                    <button class="btn btn-success" type="button" th:if="${bookReview.open}" th:href="@{'/bookReview/close/'+${bookReview.id}}" th:id="${bookReview.id}" onclick="bookReview.close(this.id)">비공개</button>
                     <a class="btn btn-primary" th:href="@{'/bookReview/update/'+${bookReview.id}}" role="button">수정</a>
                     <a class="btn btn-danger" th:href="@{'/bookReview/delete/'+${bookReview.id}}" role="button">삭제</a>
                 </div>
@@ -32,5 +34,6 @@
         </div>
     </div>
 </div>
+<script th:replace="bookReview-fragments.html :: bookReview-event"></script>
 </body>
 </html>

@@ -11,9 +11,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -30,8 +27,6 @@ public class BookReviewService {
         BookReview bookReview = BookReview.builder()
                 .title(bookReviewForm.getTitle())
                 .content(bookReviewForm.getContent())
-                .createdTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-                .modifiedTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .account(account)
                 .book(bookById)
                 .build();
@@ -78,5 +73,15 @@ public class BookReviewService {
         if (!bookReviewById.getAccount().equals(account)) {
             throw new IllegalArgumentException("독서록 삭제 권한이 없습니다.");
         }
+    }
+
+    public void bookReviewOpen(Long bookReviewId) {
+        BookReview bookReview = bookReviewRepository.findBookReviewById(bookReviewId);
+        bookReview.setOpen(true);
+    }
+
+    public void bookReviewClose(Long bookReviewId) {
+        BookReview bookReview = bookReviewRepository.findBookReviewById(bookReviewId);
+        bookReview.setOpen(false);
     }
 }

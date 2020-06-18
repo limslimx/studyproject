@@ -19,9 +19,7 @@ public class BookReview {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String content;
 
-    private String createdTime;
-
-    private String modifiedTime;
+    private boolean isOpen;
 
     @ManyToOne
     @JoinColumn(name = "account_id")

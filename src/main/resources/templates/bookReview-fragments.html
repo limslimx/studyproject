@@ -16,5 +16,43 @@
     </script>
 </div>
 
+<div th:fragment="bookReview-event">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        var bookReview = {
+            open : function (bookReviewId) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                $.ajax({
+                    url: "/bookReview/open/" + bookReviewId,
+                    type: "POST",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                }).done(function (nickname) {
+                    alert("해당 독서록을 공개로 변경하였습니다.");
+                    location.href = "/bookReview/list/" + nickname;
+                });
+            },
+            close : function (bookReviewId) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                $.ajax({
+                    url: "/bookReview/close/" + bookReviewId,
+                    type: "POST",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                }).done(function (nickname) {
+                    alert("해당 독서록을 비공개로 변경하였습니다.");
+                    location.href = "/bookReview/list/" + nickname;
+                });
+            }
+        }
+    </script>
+</div>
+
 
 </html>

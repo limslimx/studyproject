@@ -15,6 +15,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -114,6 +115,20 @@ public class BookReviewController {
     public String bookReviewDelete(@CurrentUser Account account, @PathVariable Long bookReviewId, RedirectAttributes attributes) {
         bookReviewService.deleteBookReview(bookReviewId, account);
         attributes.addFlashAttribute("message", "독서록을 삭제하였습니다.");
-        return "redirect:/bookReview/list/"+account.getNickname();
+        return "redirect:/bookReview/list/" + account.getNickname();
+    }
+
+    //독서록 공개로 변경 핸들러
+    @PostMapping("/bookReview/open/{bookReviewId}")
+    public @ResponseBody String bookReviewOpen(@CurrentUser Account account, @PathVariable Long bookReviewId) {
+        bookReviewService.bookReviewOpen(bookReviewId);
+        return account.getNickname();
+    }
+
+    //독서록 비공개로 변경 핸들러
+    @PostMapping("/bookReview/close/{bookReviewId}")
+    public @ResponseBody String bookReviewClose(@CurrentUser Account account, @PathVariable Long bookReviewId) {
+        bookReviewService.bookReviewClose(bookReviewId);
+        return account.getNickname();
     }
 }

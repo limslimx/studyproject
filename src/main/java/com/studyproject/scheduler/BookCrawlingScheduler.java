@@ -26,7 +26,7 @@ public class BookCrawlingScheduler {
     private final BookRepository bookRepository;
 
     //소설 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void literature_novelCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "소설", true);
         log.info("#######count: "+count);
@@ -101,16 +101,16 @@ public class BookCrawlingScheduler {
     }
 
     //에세이 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void literature_essayCrawling() throws IOException {
-        int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "에세이", true);
+        int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "시에세이", true);
         log.info("#######count: "+count);
         if (count == 0) {
             log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "문학";
-            String detailCategory = "시/에세이";
+            String detailCategory = "시에세이";
 
             String url = "http://www.kyobobook.co.kr/bestSellerNew/bestseller.laf?mallGb=KOR&linkClass=C&range=1&kind=0&orderClick=DAb";
             Document doc = Jsoup.connect(url).get();
@@ -176,16 +176,16 @@ public class BookCrawlingScheduler {
     }
 
     //시 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void literature_poemCrawling() throws IOException {
-        int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "시", true);
+        int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "시에세이", true);
         log.info("#######count: "+count);
         if (count == 0) {
             log.info("---------------crawling start---------------");
             List<Book> bookList = new ArrayList<Book>();
 
             String categoryValue = "문학";
-            String detailCategory = "시/에세이";
+            String detailCategory = "시에세이";
 
             String url = "http://www.kyobobook.co.kr/bestSellerNew/bestseller.laf?mallGb=KOR&linkClass=F&range=1&kind=0&orderClick=DAb";
             Document doc = Jsoup.connect(url).get();
@@ -251,7 +251,7 @@ public class BookCrawlingScheduler {
     }
 
     //인문 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void humanities_humanitiesCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "인문", true);
         log.info("#######count: "+count);
@@ -326,7 +326,7 @@ public class BookCrawlingScheduler {
     }
 
     //정치사회 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void humanities_societyCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "정치사회", true);
         log.info("#######count: "+count);
@@ -401,7 +401,7 @@ public class BookCrawlingScheduler {
     }
 
     //경제경영 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void humanities_economyCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "경제경영", true);
         log.info("#######count: "+count);
@@ -476,7 +476,7 @@ public class BookCrawlingScheduler {
     }
 
     //역사문화 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void humanities_historyCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "역사문화", true);
         log.info("#######count: "+count);
@@ -551,7 +551,7 @@ public class BookCrawlingScheduler {
     }
 
     //교양과학 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void real_scienceCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "교양과학", true);
         log.info("#######count: "+count);
@@ -626,7 +626,7 @@ public class BookCrawlingScheduler {
     }
 
     //외국어 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void real_languageCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "외국어", true);
         log.info("#######count: "+count);
@@ -701,7 +701,7 @@ public class BookCrawlingScheduler {
     }
 
     //예술 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void real_artCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "예술", true);
         log.info("#######count: "+count);
@@ -776,7 +776,7 @@ public class BookCrawlingScheduler {
     }
 
     //여행 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void real_tripCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "여행", true);
         log.info("#######count: "+count);
@@ -851,7 +851,7 @@ public class BookCrawlingScheduler {
     }
 
     //자기계발 베스트셀러 크롤링 메서드
-    @Scheduled(cron = "0 0/5 10 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void selfDevelopment_selfDevelopmentCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "자기계발", true);
         log.info("#######count: "+count);
@@ -926,7 +926,7 @@ public class BookCrawlingScheduler {
     }
 
     //소설 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryNovelCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "소설", false);
 
@@ -998,7 +998,7 @@ public class BookCrawlingScheduler {
     }
 
     //시&에세이 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryPoemAndEssayCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "시에세이", false);
 
@@ -1070,7 +1070,7 @@ public class BookCrawlingScheduler {
     }
 
     //인문 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryHumanityCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "인문", false);
 
@@ -1142,7 +1142,7 @@ public class BookCrawlingScheduler {
     }
 
     //정치사회 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategorySocietyCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "정치사회", false);
 
@@ -1214,7 +1214,7 @@ public class BookCrawlingScheduler {
     }
 
     //경제경영 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryEconomyCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "경제경영", false);
 
@@ -1286,7 +1286,7 @@ public class BookCrawlingScheduler {
     }
 
     //역사문화 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryHistoryCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "역사문화", false);
 
@@ -1358,7 +1358,7 @@ public class BookCrawlingScheduler {
     }
 
     //교양과학 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryScienceCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "교양과학", false);
 
@@ -1430,7 +1430,7 @@ public class BookCrawlingScheduler {
     }
 
     //외국어 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryLanguageCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "외국어", false);
 
@@ -1502,7 +1502,7 @@ public class BookCrawlingScheduler {
     }
 
     //여행 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryTravelCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "여행", false);
 
@@ -1574,7 +1574,7 @@ public class BookCrawlingScheduler {
     }
 
     //예술 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategoryArtCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "예술", false);
 
@@ -1646,7 +1646,7 @@ public class BookCrawlingScheduler {
     }
 
     //자기계발 카테고리 크롤링 메서드
-    @Scheduled(cron = "0 0/5 21 * * *")
+    @Scheduled(cron = "0 0/25 10 * * *")
     public void bookCategorySelfDevelopmentCrawling() throws IOException {
         int count = bookRepository.countBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), "자기계발", false);
 
