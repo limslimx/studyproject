@@ -32,4 +32,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Book findTop1ByNameAndSearchDate(String bookName, String searchDate);
 
     List<Book> findBySearchDateAndDetailCategoryAndBestCellar(String searchDate, String detailCategory, boolean bestCellar);
+
+    List<Book> findTop3BySearchDateAndDetailCategoryAndBestCellar(String searchDate, String detailCategory, boolean betsCellar);
 }
