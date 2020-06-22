@@ -18,10 +18,7 @@ public class BookReviewRepositoryExtensionImpl extends QuerydslRepositorySupport
         QBookReview bookReview = QBookReview.bookReview;
         JPQLQuery<BookReview> query = from(bookReview).where(bookReview.isOpen.isTrue()
                 .and(bookReview.account.id.isNotNull())
-                .and(bookReview.title.containsIgnoreCase(keyword))
-                .or(bookReview.book.name.containsIgnoreCase(keyword))
-                .or(bookReview.book.subName.containsIgnoreCase(keyword))
-                .or(bookReview.book.tag.containsIgnoreCase(keyword)));
+                .and(bookReview.book.name.containsIgnoreCase(keyword)));
         return query.fetch();
     }
 }
