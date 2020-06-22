@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Transactional(readOnly = true)
-public interface BookReviewRepository extends JpaRepository<BookReview, Long> {
+public interface BookReviewRepository extends JpaRepository<BookReview, Long>, BookReviewRepositoryExtension {
 
     List<BookReview> findByAccount(Account account);
 

@@ -4,6 +4,7 @@ import com.studyproject.account.CurrentUser;
 import com.studyproject.bookReview.BookReviewRepository;
 import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
+import com.studyproject.domain.BookReview;
 import com.studyproject.favorBook.FavorBookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ public class MainController {
 
     private final MainService mainService;
     private final FavorBookRepository favorBookRepository;
+    private final BookReviewRepository bookReviewRepository;
 
     @GetMapping("/")
     public String index(@CurrentUser Account account, Model model) {
@@ -36,4 +38,9 @@ public class MainController {
     public String login() {
         return "login";
     }
+
+//    @GetMapping("/search/bookReview")
+//    public String searchBookReview(String keyword, Model model) {
+//        List<BookReview> bookReviewList = bookReviewRepository.findByKeyword(keyword);
+//    }
 }
