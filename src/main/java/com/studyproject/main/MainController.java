@@ -39,8 +39,11 @@ public class MainController {
         return "login";
     }
 
-//    @GetMapping("/search/bookReview")
-//    public String searchBookReview(String keyword, Model model) {
-//        List<BookReview> bookReviewList = bookReviewRepository.findByKeyword(keyword);
-//    }
+    @GetMapping("/search/bookReview")
+    public String searchBookReview(String keyword, Model model) {
+        List<BookReview> bookReviewList = bookReviewRepository.findByKeyword(keyword);
+        model.addAttribute("bookReviewList", bookReviewList);
+        model.addAttribute("keyword", keyword);
+        return "search";
+    }
 }

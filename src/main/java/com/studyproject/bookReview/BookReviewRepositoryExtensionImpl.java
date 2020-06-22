@@ -1,5 +1,6 @@
 package com.studyproject.bookReview;
 
+import com.querydsl.jpa.JPQLQuery;
 import com.studyproject.domain.BookReview;
 import com.studyproject.domain.QBookReview;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -15,6 +16,12 @@ public class BookReviewRepositoryExtensionImpl extends QuerydslRepositorySupport
     @Override
     public List<BookReview> findByKeyword(String keyword) {
         QBookReview bookReview = QBookReview.bookReview;
-        return null;
+        JPQLQuery<BookReview> query = from(bookReview).where(bookReview.isOpen.isTrue()
+                .and(bookReview.account.id.isNotNull())
+                .and(bookReview.title.containsIgnoreCase(keyword))
+                .or(bookReview.book.name.containsIgnoreCase(keyword))
+                .or(bookReview.book.subName.containsIgnoreCase(keyword))
+                .or(bookReview.book.tag.containsIgnoreCase(keyword)));
+        return query.fetch();
     }
 }
