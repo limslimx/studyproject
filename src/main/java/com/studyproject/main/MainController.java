@@ -46,10 +46,11 @@ public class MainController {
     }
 
     @GetMapping("/search/bookReview")
-    public String searchBookReview(@PageableDefault(size = 6, page = 0, sort = "modifiedDate", direction = Sort.Direction.ASC) Pageable pageable, String keyword, Model model) {
+    public String searchBookReview(@PageableDefault(size = 6, page = 0, sort = "modifiedDate", direction = Sort.Direction.DESC) Pageable pageable, String keyword, Model model) {
         Page<BookReview> bookReviewPageList = bookReviewRepository.findByKeyword(keyword, pageable);
         model.addAttribute("bookReviewPageList", bookReviewPageList);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("sortProperty", "modifiedDate");
         return "search";
     }
 }

@@ -3,60 +3,115 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head"></head>
 <body class="bg-light">
-    <div th:replace="fragments.html :: main-nav"></div>
-    <div class="py-5 text-center">
-        <p class="lead" th:if="${bookReviewPageList.getTotalElements() == 0}">
-            <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 독서록이 없습니다.
-        </p>
-        <p class="lead" th:if="${bookReviewPageList.getTotalElements() > 0}">
-            <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 독서록을
-            <span th:text="${bookReviewPageList.getTotalElements()}"></span>개
-            찾았습니다.
-        </p>
-    </div><div class="row justify-content-center pt-3">
-        <div class="col-sm-7">
-            <div class="row">
-                <div class="col-md-4" th:each="bookReview: ${bookReviewPageList.getContent()}">
-                    <div class="card mb-4 shadow-sm">
-                        <img th:src="${bookReview.book.img}" class="card-img-top" th:alt="${bookReview.book.name}">
-                        <div class="card-body">
-                            <a th:href="@{'/bookReview/detail/' + ${bookReview.id}}" class="text-decoration-none">
-                                <h5 class="card-title context" th:text="${bookReview.book.name}"></h5>
-                            </a>
-                            <p class="card-text" th:text="'제목: ' +${bookReview.title}"></p>
-                            <p class="card-text context">
-                                <span th:each="tag : ${bookReview.book.tag}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+<div th:replace="fragments.html :: main-nav"></div>
+<div class="py-5 text-center">
+    <p class="lead" th:if="${bookReviewPageList.getTotalElements() == 0}">
+        <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 독서록이 없습니다.
+    </p>
+    <p class="lead" th:if="${bookReviewPageList.getTotalElements() > 0}">
+        <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 독서록을
+        <span th:text="${bookReviewPageList.getTotalElements()}"></span>개
+        찾았습니다.
+    </p>
+</div>
+<div class="row justify-content-center pt-3">
+    <div class="col-sm-7">
+        <div class="row">
+            <div class="col-md-4" th:each="bookReview: ${bookReviewPageList.getContent()}">
+                <div class="card mb-4 shadow-sm">
+                    <img th:src="${bookReview.book.img}" class="card-img-top" th:alt="${bookReview.book.name}">
+                    <div class="card-body">
+                        <a th:href="@{'/bookReview/detail/' + ${bookReview.id}}" class="text-decoration-none">
+                            <h5 class="card-title context" th:text="${bookReview.book.name}"></h5>
+                        </a>
+                        <p class="card-text context" th:text="'제목: ' +${bookReview.title}"></p>
+                        <p class="card-text">
+                                <span th:each="tag : ${bookReview.book.tag}"
+                                      class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
                                     <a th:href="@{'/search/tag/' + ${tag}}" class="text-decoration-none text-white">
                                         <i class="fa fa-tag"></i> <span th:text="${tag}">Tag</span>
                                     </a>
                                 </span>
-                                <br/>
-                                <span th:each="category: ${bookReview.book.detailCategory}" class="font-weight-light text-monospace badge badge-primary mr-3">
-                                    <a th:href="@{'/book/category/' + ${bookReview.book.detailCategory}}" class="text-decoration-none text-white">
+                            <br/>
+                            <span th:each="category: ${bookReview.book.detailCategory}"
+                                  class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a th:href="@{'/book/category/' + ${bookReview.book.detailCategory}}"
+                                       class="text-decoration-none text-white">
                                         <i class="fas fa-th-list"></i> <span th:text="${category}" class="text-white">City</span>
                                     </a>
                                 </span>
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    <i class="fa fa-user-circle"></i>
-                                    <span th:text="${bookReview.account.nickname}"></span>
-                                </small>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    <i class="fas fa-clock"></i>
-                                    <span class="date" th:text="${bookReview.modifiedDate}">9 mins</span>
-                                </small>
-                            </div>
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fa fa-user-circle"></i>
+                                <span th:text="${bookReview.account.nickname}"></span>
+                            </small>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock"></i>
+                                <span class="date" th:text="${bookReview.modifiedDate}">9 mins</span>
+                            </small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-<footer th:replace="fragments.html :: footer"></footer>
 </div>
+<div class="row justify-content-center">
+    <div class="col-sm-7">
+        <nav>
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item" th:classappend="${!bookReviewPageList.hasPrevious()}? disabled">
+                    <a th:href="@{'/search/bookReview?keyword='+${keyword}+'&sort='+${sortProperty}+',desc&page='+${bookReviewPageList.getNumber() - 1}}"
+                       class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+
+                <li class="page-item" th:classappend="${i == bookReviewPageList.getNumber()}? active"
+                    th:each="i: ${#numbers.sequence(0, bookReviewPageList.getTotalPages() - 1)}">
+                    <a th:href="@{'/search/bookReview?keyword='+${keyword}+'&sort='+${sortProperty}+',desc&page='+${i}}"
+                       class="page-link" href="#" th:text="${i+1}"></a>
+                </li>
+
+                <li class="page-item" th:classappend="${!bookReviewPageList.hasNext()}? disabled">
+                    <a th:href="@{'/search/bookReview?keyword='+${keyword}+'&sort='+${sortProperty}+',desc&page='+${bookReviewPageList.getNumber() + 1}}"
+                       class="page-link">Next</a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+</div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
+<script type="application/javascript">
+    $(function(){
+        var mark = function() {
+            // Read the keyword
+            var keyword = $("#keyword").text();
+
+            // Determine selected options
+            var options = {
+                "each": function(element) {
+                    setTimeout(function() {
+                        $(element).addClass("animate");
+                    }, 150);
+                }
+            };
+
+            // Mark the keyword inside the context
+            $(".context").unmark({
+                done: function() {
+                    $(".context").mark(keyword, options);
+                }
+            });
+        };
+
+        mark();
+    });
+</script>
 </body>
 </html>
