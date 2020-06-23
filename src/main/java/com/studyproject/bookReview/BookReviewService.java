@@ -11,6 +11,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -27,6 +31,9 @@ public class BookReviewService {
         BookReview bookReview = BookReview.builder()
                 .title(bookReviewForm.getTitle())
                 .content(bookReviewForm.getContent())
+                .createDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                .modifiedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                .isOpen(false)
                 .account(account)
                 .book(bookById)
                 .build();
@@ -55,6 +62,7 @@ public class BookReviewService {
     //독서록 수정 메서드
     public void updateBookReview(BookReview bookReview, BookReviewForm bookReviewForm) {
         modelMapper.map(bookReviewForm, bookReview);
+        bookReview.setModifiedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
     }
 
     //독서록 삭제 메서드
@@ -84,4 +92,5 @@ public class BookReviewService {
         BookReview bookReview = bookReviewRepository.findBookReviewById(bookReviewId);
         bookReview.setOpen(false);
     }
+
 }

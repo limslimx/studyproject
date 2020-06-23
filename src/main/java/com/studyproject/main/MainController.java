@@ -2,11 +2,16 @@ package com.studyproject.main;
 
 import com.studyproject.account.CurrentUser;
 import com.studyproject.bookReview.BookReviewRepository;
+import com.studyproject.bookReview.BookReviewService;
 import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
 import com.studyproject.domain.BookReview;
 import com.studyproject.favorBook.FavorBookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +35,7 @@ public class MainController {
             model.addAttribute("favorBookList", favorBookList);
             model.addAttribute(account);
         }
+
         return "index";
     }
 
@@ -40,9 +46,9 @@ public class MainController {
     }
 
     @GetMapping("/search/bookReview")
-    public String searchBookReview(String keyword, Model model) {
-        List<BookReview> bookReviewList = bookReviewRepository.findByKeyword(keyword);
-        model.addAttribute("bookReviewList", bookReviewList);
+    public String searchBookReview(@PageableDefault(size = 6, page = 0, sort = "modifiedDate", direction = Sort.Direction.ASC) Pageable pageable, String keyword, Model model) {
+        Page<BookReview> bookReviewPageList = bookReviewRepository.findByKeyword(keyword, pageable);
+        model.addAttribute("bookReviewPageList", bookReviewPageList);
         model.addAttribute("keyword", keyword);
         return "search";
     }

@@ -2,6 +2,7 @@ package com.studyproject.book;
 
 import com.studyproject.account.CurrentUser;
 import com.studyproject.book.form.BookSearchForm;
+import com.studyproject.bookReview.BookReviewService;
 import com.studyproject.domain.Account;
 import com.studyproject.domain.Book;
 import com.studyproject.favorBook.FavorBookRepository;
@@ -29,6 +30,7 @@ public class BookController {
     private final BookService bookService;
     private final BookRepository bookRepository;
     private final FavorBookRepository favorBookRepository;
+    private final BookReviewService bookReviewService;
 
     //책 검색 폼 핸들러
     @GetMapping("/book/search")
@@ -74,6 +76,7 @@ public class BookController {
         model.addAttribute("account", account);
         model.addAttribute("bookBestCellarList", bookBestCellarList);
         model.addAttribute("favorBookList", favorBookList);
+
         return "book/category/literature-list";
     }
 

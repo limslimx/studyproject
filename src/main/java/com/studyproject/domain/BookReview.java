@@ -19,6 +19,10 @@ public class BookReview {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String content;
 
+    private String createDate;
+
+    private String modifiedDate;
+
     private boolean isOpen;
 
     @ManyToOne
