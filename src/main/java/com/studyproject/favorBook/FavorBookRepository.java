@@ -1,5 +1,6 @@
 package com.studyproject.favorBook;
 
+import com.studyproject.domain.Account;
 import com.studyproject.domain.FavorBook;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,4 +21,6 @@ public interface FavorBookRepository extends JpaRepository<FavorBook, Long> {
     @Modifying
     @Query("update FavorBook fb set fb.account.id=null where fb.account.id=:accountId")
     void updateToNull(@Param("accountId") Long accountId);
+
+    void deleteByAccount(Account account);
 }

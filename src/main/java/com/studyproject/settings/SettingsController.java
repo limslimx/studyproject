@@ -12,6 +12,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -38,7 +39,6 @@ public class SettingsController {
     public String updateProfile(@CurrentUser Account account, Model model) {
         model.addAttribute("account", account);
         model.addAttribute("profile", new Profile(account));
-
         return "settings/profile";
     }
 
@@ -73,40 +73,21 @@ public class SettingsController {
         }
         accountService.updatePassword(account, passwordForm.getNewPassword());
         attributes.addFlashAttribute("message", "비밀번호를 수정하였습니다.");
-
         return "redirect:/settings/password";
-    }
-
-    @GetMapping("/settings/notifications")
-    public String updateNotificationForm(@CurrentUser Account account, Model model) {
-        model.addAttribute("account", account);
-        model.addAttribute(new NotificationForm(account));
-        return "/settings/notifications";
-    }
-
-    @PostMapping("/settings/notifications")
-    public String updateNotification(@CurrentUser Account account, @Valid NotificationForm notificationForm, Errors errors, Model model, RedirectAttributes attributes) {
-        if (errors.hasErrors()) {
-            model.addAttribute("account", account);
-            return "/settings/notifications";
-        }
-        accountService.updateNotification(account, notificationForm);
-        attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
-        return "redirect:/settings/notifications";
     }
 
     @GetMapping("/settings/account")
     public String updateAccountForm(@CurrentUser Account account, Model model) {
         model.addAttribute("account", account);
         model.addAttribute("nicknameForm", new NicknameForm(account));
-        return "/settings/account";
+        return "settings/account";
     }
 
     @PostMapping("/settings/account")
     public String updateAccount(@CurrentUser Account account, @Valid NicknameForm nickNameForm, Errors errors, Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
             model.addAttribute("account", account);
-            return "/settings/account";
+            return "settings/account";
         }
         accountService.updateNickname(account, nickNameForm.getNickname());
         attributes.addFlashAttribute("message", "닉네임을 수정하였습니다.");

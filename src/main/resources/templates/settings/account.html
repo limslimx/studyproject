@@ -21,17 +21,22 @@
             <hr/>
 
             <div class="row">
-                <form class="needs-validation col-sm-7" th:object="${nicknameForm}" th:action="@{/settings/account}" method="post" novalidate>
+                <form class="needs-validation col-sm-7" th:object="${nicknameForm}" th:action="@{/settings/account}"
+                      method="post" novalidate>
                     <div class="form-group">
-                        <input id="nickname" type="text" th:field="*{nickname}" class="form-control" aria-describedby="nicknameHelp" required>
+                        <label for="nickname">닉네임</label>
+                        <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+                               aria-describedby="nicknameHelp" required>
                         <small id="nicknameHelp" class="form-text text-muted">
                             공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력하세요. 가입후에 변경할 수 있습니다.
                         </small>
                         <small class="invalid-feedback">닉네임을 입력하세요.</small>
-                        <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">nickname Error</small>
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}"
+                               th:errors="*{nickname}">nickname Error</small>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">변경하기</button>
+                        <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">변경하기
+                        </button>
                     </div>
                 </form>
             </div>
@@ -47,35 +52,9 @@
             </div>
         </div>
     </div>
-
-    <div th:replace="fragments.html :: footer"></div>
 </div>
-<script th:replace="fragments.html :: form-validation"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-    $("#delete_btn").on("click", function () {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var nickname = $("#nickname").html();
-
-        $.ajax({
-            url: "/delete/account/" + nickname,
-            type: "POST",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader(header, token);
-            }
-        }).done(function (result) {
-            if (result == true) {
-                alert("회원탈퇴에 성공하였습니다.");
-            } else {
-                alert("회원탈퇴에 실패하였습니다. 다시 시도해주세요.");
-            }
-            location.href = "/login";
-        }).fail(function () {
-            alert("회원탈퇴에 실패하였습니다. 관리자에게 문의해주세요.");
-            location.href = "/login";
-        });
-    });
-</script>
+    <div th:replace="fragments.html :: footer"></div>
+    <script th:replace="fragments.html :: form-validation"></script>
+<script th:replace="fragments.html :: account-update-event"></script>
 </body>
 </html>

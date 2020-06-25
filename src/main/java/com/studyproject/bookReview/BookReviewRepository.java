@@ -25,4 +25,6 @@ public interface BookReviewRepository extends JpaRepository<BookReview, Long>, B
 
     @Query("select new com.studyproject.main.BookRecommendDto(b.detailCategory, count(br)) from BookReview br join Book b on br.book.id=b.id and br.account=:account group by br.book.detailCategory")
     List<BookRecommendDto> findBookDetailCategoryAndCount(Account account);
+
+    void deleteByAccount(Account account);
 }

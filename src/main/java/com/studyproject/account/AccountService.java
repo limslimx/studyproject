@@ -173,8 +173,8 @@ public class AccountService implements UserDetailsService {
 
     public void deleteAccount(String nickname) {
         Account account = accountRepository.findByNickname(nickname);
-        favorBookRepository.updateToNull(account.getId());
-        bookReviewRepository.updateToNull(account.getId());
+        favorBookRepository.deleteByAccount(account);
+        bookReviewRepository.deleteByAccount(account);
         accountRepository.delete(account);
     }
 }
