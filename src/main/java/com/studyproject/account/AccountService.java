@@ -120,6 +120,7 @@ public class AccountService implements UserDetailsService {
     public void updateProfile(Account account, Profile profile) {
         account.setBio(profile.getBio());
         account.setLocation(profile.getLocation());
+        account.setProfileImage(profile.getProfileImage());
         accountRepository.save(account);
     }
 

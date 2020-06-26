@@ -12,11 +12,11 @@ public class Profile {
 
     private String location;
 
-//    private String profileImage;
+    private String profileImage;
 
     public Profile(Account account) {
         this.bio = account.getBio();
         this.location = account.getLocation();
-//        this.profileImage = account.getProfileImage();
+        this.profileImage = account.getProfileImage();
     }
 }
