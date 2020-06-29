@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -125,7 +124,7 @@ public class BookService {
 
     //해당 책이 Book에 존재하는지 확인하는 메서드
     private Book bookExistsValidation(String bookName) {
-        Book book = bookRepository.findTop1ByNameAndSearchDate(bookName, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        Book book = bookRepository.findTop1ByName(bookName);
         if (book == null) {
             throw new IllegalArgumentException(bookName + "라는 이름을 가진 책이 존재하지 않습니다.");
         }

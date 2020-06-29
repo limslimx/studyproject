@@ -116,20 +116,6 @@ public class BookController {
         return "book/category/selfDevelopment-list";
     }
 
-    //관심도서 추가 기능 핸들러
-    @PostMapping("/favorBook/add/{bookName}")
-    public @ResponseBody String favorBookAdd(@CurrentUser Account account, @PathVariable String bookName, Model model) {
-        bookService.addFavorBook(account, bookName);
-        return bookName;
-    }
-
-    //관심도서 삭제 기능 핸들러
-    @PostMapping("/favorBook/delete/{bookName}")
-    public @ResponseBody String favorBookDelete(@CurrentUser Account account, @PathVariable String bookName, Model model) {
-        bookService.deleteFavorBook(account, bookName);
-        return bookName;
-    }
-
     @GetMapping("/book/category/{detailCategory}")
     public String bookCategoryList(@CurrentUser Account account, @PathVariable String detailCategory, Model model) {
         List<Book> bookList = bookRepository.findBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), detailCategory, false);

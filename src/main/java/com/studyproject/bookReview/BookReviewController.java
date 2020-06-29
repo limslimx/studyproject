@@ -67,6 +67,7 @@ public class BookReviewController {
         List<BookReview> bookReviewList = bookReviewRepository.findByAccount(byNickname);
         model.addAttribute("bookReviewList", bookReviewList);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("account", account);
         return "bookReview/list";
     }
 
