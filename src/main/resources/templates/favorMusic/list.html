@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2 th:text="${account.nickname}+'님의 관심노래 목록'"></h2>
+    </div>
+    <div class="row justify-content-center pt-3">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-md-4" th:each="favorMusic: ${favorMusicList}">
+                    <div class="card mb-4 shadow-sm">
+                        <img th:src="${favorMusic.music.img}" class="card-img-top" th:alt="${favorMusic.music.name}">
+                        <div class="card-body">
+                            <h5 class="card-title context" th:text="${favorMusic.music.name}"></h5>
+                            <p class="card-text context">
+                                <span th:each="genre: ${favorMusic.music.genre}" class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a th:href="@{'/book/category/' + ${favorMusic.music.genre}}" class="text-decoration-none text-white">
+                                        <i class="fas fa-th-list"></i> <span th:text="${genre}" class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span th:text="${favorMusic.music.artist}"></span>
+                                </small>
+                            </div>
+                            <hr/>
+                            <div class="text-center">
+                                <button type="button" th:id="${favorMusic.music.name}" onclick="favorMusic.delete_btn(this.id)" class="btn btn-danger btn-sm favorBookDelete_btn">관심도서 삭제하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+<script th:replace="fragments.html :: form-validation"></script>
+<script th:replace="music-fragments.html :: favorMusic-event"></script>
+</body>
+</html>

@@ -1,21 +1,16 @@
 package com.studyproject.main;
 
 import com.studyproject.account.CurrentUser;
-import com.studyproject.bookReview.BookReviewRepository;
-import com.studyproject.bookReview.BookReviewService;
 import com.studyproject.domain.Account;
-import com.studyproject.domain.Book;
-import com.studyproject.domain.BookReview;
-import com.studyproject.favorBook.FavorBookRepository;
+import com.studyproject.domain.Music;
+import com.studyproject.favorMusic.FavorMusicRepository;
+import com.studyproject.music.MusicService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,16 +18,16 @@ import java.util.List;
 public class MainController {
 
     private final MainService mainService;
-    private final FavorBookRepository favorBookRepository;
-    private final BookReviewRepository bookReviewRepository;
+    private final MusicService musicService;
+    private final FavorMusicRepository favorMusicRepository;
 
     @GetMapping("/")
     public String index(@CurrentUser Account account, Model model) {
         if (account != null) {
-            List<Book> bookRecommendList = mainService.bookRecommend(account);
-            List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
-            model.addAttribute("bookRecommendList", bookRecommendList);
-            model.addAttribute("favorBookList", favorBookList);
+            List<Music> musicRecommendList = mainService.musicRecommend();
+            List<String> favorMusicList = favorMusicRepository.findMusicNameByAccountId(account.getId());
+            model.addAttribute("musicRecommendList", musicRecommendList);
+            model.addAttribute("favorMusicList", favorMusicList);
             model.addAttribute(account);
         }
 
@@ -45,12 +40,10 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/search/bookReview")
-    public String searchBookReview(@PageableDefault(size = 6, page = 0, sort = "modifiedDate", direction = Sort.Direction.DESC) Pageable pageable, String keyword, Model model) {
-        Page<BookReview> bookReviewPageList = bookReviewRepository.findByKeyword(keyword, pageable);
-        model.addAttribute("bookReviewPageList", bookReviewPageList);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("sortProperty", "modifiedDate");
-        return "search";
+    @GetMapping("/search/musicByLyric")
+    public String searchByLyric(String keyword, Model model) throws IOException {
+        List<Music> musicList = musicService.getSearchByLyric(keyword);
+        model.addAttribute("musicList", musicList);
+        return "/music/searchResult";
     }
 }

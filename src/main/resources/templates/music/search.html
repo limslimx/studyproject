@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>노래 검색하기</h2>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <form class="col-sm-3" th:action="@{/music/search/save}" th:object="${musicSearchForm}" method="post" novalidate>
+            <div class="form-group">
+                <label for="searchBy">검색어</label>
+                <input type="text" id="searchBy" th:field="*{searchBy}" class="form-control" aria-describedby="searchByHelp" required>
+                <small id="searchByHelp" class="form-text text-muted">
+                    찾고싶은 음악을 입력하세요.
+                </small>
+                <small class="invalid-feedback">비밀번호를 입력하세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('searchBy')}" th:errors="*{searchBy}">searchBy error</small>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary btn-block">검색</button>
+            </div>
+        </form>
+    </div>
+    <div class="row justify-content-center pt-3">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-md-4" th:each="music: ${musicList}">
+                    <div class="card mb-4 shadow-sm">
+                        <img th:src="${music.img}" class="card-img-top" th:alt="${music.name}">
+                        <div class="card-body">
+                            <h5 class="card-title context bookName" th:text="${music.name}" th:id="${music.name}"></h5>
+                            <p class="card-text" th:text="${music.lyric}">Short description</p>
+                            <p class="card-text context">
+                                <span th:each="genre : ${music.genre}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                                    <a th:href="@{'/search/tag/' + ${genre}}" class="text-decoration-none text-white">
+                                        <i class="fa fa-tag"></i> <span th:text="${genre}">Tag</span>
+                                    </a>
+                                </span>
+                                <br/>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted"> 
+                                    <i class="fa fa-user-circle"></i>
+                                    <span th:text="${music.artist}"></span> 저
+                                </small>
+                            </div>
+                            <hr/>
+                            <div class="text-center">
+<!--                                <a type="button" th:href="@{'/bookReview/' + ${music.id}}" class="btn btn-primary btn-sm">독서록 작성하기</a>-->
+<!--                                <button th:if="${!#lists.contains(favorBookList, music.name)}" type="button" th:id="${music.name}" onclick="favorMusic.add_btn(this.id)" class="btn btn-secondary btn-sm favorBookAdd_btn">관심도서 추가하기</button>-->
+<!--                                <button th:if="${#lists.contains(favorBookList, music.name)}" type="button" th:id="${music.name}" onclick="favorMusic.delete_btn(this.id)" class="btn btn-danger btn-sm favorBookDelete_btn">관심도서 삭제하기</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+<script th:replace="fragments.html :: form-validation"></script>
+<script th:replace="music-fragments.html :: favorMusic-event"></script>
+</body>
+</html>
