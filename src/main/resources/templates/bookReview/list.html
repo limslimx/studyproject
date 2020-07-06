@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-4" th:each="bookReview: ${bookReviewList}">
                     <div class="card mb-4 shadow-sm">
-                        <img th:src="${bookReview.book.img}" class="card-img-top" th:alt="${bookReview.book.name}">
+                        <img th:src="${bookReview.book.img}" class="card-img-top" th:alt="${bookReview.book.name}" width="400" height="400">
                         <div class="card-body">
                             <a th:href="@{'/bookReview/detail/' + ${bookReview.id}}" class="text-decoration-none">
                                 <h5 class="card-title context" th:text="${bookReview.book.name}"></h5>

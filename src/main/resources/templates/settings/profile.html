@@ -16,26 +16,26 @@
                 </button>
             </div>
             <div class="row">
-                <h2 class="col-sm-12">공개 프로필</h2>
+                <h2 class="col-sm-12">프로필 설정</h2>
             </div>
             <hr/>
 
             <div class="row mt-3">
                 <form class="col-sm-6" th:action="@{/settings/profile}" th:object="${profile}" method="post" novalidate>
                     <div class="form-group">
-                        <label for="bio">한줄 소개</label>
-                        <input id="bio" type="text" th:field="*{bio}" class="form-control" placeholder="한줄 소개를 작성하세요." aria-describedby="bioHelp" required>
+                        <label for="bio">Bio</label>
+                        <input id="bio" type="text" th:field="*{bio}" class="form-control" placeholder="한줄 소개" aria-describedby="bioHelp" required>
                         <small id="bioHelp" class="form-text text-muted">
-                            한줄 소개를 짧게 입력해주세요.
+                            한줄 소개를 입력해주세요.
                         </small>
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">
-                            더 짧게 입력해주세요.
+                            짧게 입력해주세요.
                         </small>
                     </div>
 
                     <div class="form-group">
-                        <label for="location">지역</label>
-                        <input id="location" type="text" th:field="*{location}" class="form-control" placeholder="지역을 입력하세요." aria-describedby="locationHelp" required>
+                        <label for="location">Loc</label>
+                        <input id="location" type="text" th:field="*{location}" class="form-control" placeholder="지역" aria-describedby="locationHelp" required>
                         <small id="locationHelp" class="form-text text-muted">
                             사는 지역을 입력해주세요.
                         </small>

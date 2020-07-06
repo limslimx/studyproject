@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+
+<div th:replace="fragments.html :: main-nav"></div>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>팝송 TOP100</h2>
+    </div>
+    <div class="row justify-content-center pt-3">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-md-4" th:each="balad: ${musicList}">
+                    <div class="card mb-4 shadow-sm">
+                        <img th:src="${balad.img}" class="card-img-top" th:alt="${balad.name}">
+                        <div class="card-body">
+                            <a th:href="@{'/music/detail/'+${balad.id}}"><h5 class="card-title context" th:text="${balad.rank+'. '+balad.name}"></h5></a>
+                            <p class="card-text context">
+                                <br/>
+                                <span th:each="genre: ${balad.genre}" class="font-weight-light text-monospace badge badge-primary mr-3">
+                                    <a th:href="@{'/book/category/' + ${balad.genre}}" class="text-decoration-none text-white">
+                                        <i class="fas fa-th-list"></i> <span th:text="${genre}" class="text-white">City</span>
+                                    </a>
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span th:text="${balad.artist}"></span>
+                                </small>
+                            </div>
+                            <hr/>
+                            <div class="text-center">
+                                <button th:if="${!#lists.contains(favorMusicList, balad.name)}" type="button" th:id="${balad.name}" onclick="favorMusic.add_btn(this.id)" class="btn btn-secondary btn-sm favorBookAdd_btn">관심노래 추가하기</button>
+                                <button th:if="${#lists.contains(favorMusicList, balad.name)}" type="button" th:id="${balad.name}" onclick="favorMusic.delete_btn(this.id)" class="btn btn-danger btn-sm favorBookDelete_btn">관심노래 삭제하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+<script th:replace="fragments.html :: form-validation"></script>
+<script th:replace="music-fragments.html :: favorMusic-event"></script>
+</body>
+</html>

@@ -1,10 +1,7 @@
 package com.studyproject.crawling;
 
-import com.studyproject.book.BookRepository;
-import com.studyproject.domain.Account;
-import com.studyproject.domain.Book;
-import com.studyproject.domain.FavorBook;
-import com.studyproject.favorBook.FavorBookRepository;
+import com.studyproject.domain.Music;
+import com.studyproject.music.MusicRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -18,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Slf4j
@@ -27,183 +23,82 @@ import java.util.List;
 @Service
 public class CrawlingService {
 
-    private final BookRepository bookRepository;
-    private final FavorBookRepository favorBookRepository;
+    private final MusicRepository musicRepository;
 
-    //도서 검색 크롤링 메서드
-    public List<Book> getBookInfoFromCrawling(String searchBy) throws IOException {
-        List<Book> bookList = new ArrayList<Book>();
-        String siteUrl = "https://search.kyobobook.co.kr/web/search?vPstrKeyWord=" + searchBy + "&orderClick=LAG";
-        Document document = Jsoup.connect(siteUrl).get();
-        Elements elements = document.select("tbody#search_list tr");
-        for (Element element : elements) {
-
-            //카테고리 --> db에는 안넣을거지만, 카테고리가 국내도서인 도서만 db에 insert하기 위한 구분값
-            String category = element.select("div.category").text();
-            //이미지
-            Elements imageElements = element.select("div.cover img");
-            String img = imageElements.attr("src");
-            //상세카테고리
-            String detailCategory = element.select("span.category2").text();
-            //저자
-            String author = element.select("div.author a:nth-child(1)").text();
-            //태그
-            String tag = element.select("div.tag a").text();
-            String[] splitTag = tag.split(" ");
-            if (splitTag.length > 3) {
-                tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
-            }
-            //url
-            Elements urlElements = element.select("div.title a");
-            String url = urlElements.attr("href");
-
-            // ---------------------------------- 여기서부터는 상세 url에서의 정보수집 -----------------------------------
-            Document doc2 = Jsoup.connect(url).get();
-
-            //제목
-            String name = doc2.select("div.box_detail_point h1.title > strong").text();
-            //소제목
-            String subName = doc2.select("h1.title span.back").text();
-            //출간일
-            String publicationDate = doc2.select("span.date").text();
-            //순위
-            String rank = doc2.select("div.rank a:nth-child(3) em").text();
-
-                //카테고리가 국내도서인 도서만 db에 저장함
-                if (category.equals("국내도서")) {
-                    Book book = Book.builder()
-                            .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
-                            .searchBy(searchBy)
-                            .name(name)
-                            .subName(subName)
-                            .detailCategory(detailCategory)
-                            .img(img)
-                            .author(author)
-                            .url(url)
-                            .rank(rank)
-                            .tag(tag)
-                            .publicationDate(publicationDate)
-                            .bestCellar(false)
-                            .category(null)
-                            .build();
-
-                    bookList.add(book);
-                    bookRepository.save(book);
-                }
-        }
-        return bookList;
-    }
-
-    //카테고리별 도서 베스트셀러 크롤링 메서드
-    public void getCategoryBookBestCellarFromCrawling(String linkClass) throws IOException {
-        List<Book> bookList = new ArrayList<Book>();
-
-        String categoryValue = "";
-        String detailCategory = "";
-
-        if (linkClass.equals("B")) {
-            categoryValue = "문학";
-            detailCategory = "소설";
-        } else if (linkClass.equals("C")) {
-            categoryValue = "문학";
-            detailCategory = "시에세이";
-        } else if (linkClass.equals("F")) {
-            categoryValue = "문학";
-            detailCategory = "시에세이";
-        } else if (linkClass.equals("I")) {
-            categoryValue = "인문";
-            detailCategory = "인문";
-        } else if (linkClass.equals("J")) {
-            categoryValue = "인문";
-            detailCategory = "정치사회";
-        } else if (linkClass.equals("K")) {
-            categoryValue = "인문";
-            detailCategory = "경제경영";
-        } else if (linkClass.equals("b")) {
-            categoryValue = "인문";
-            detailCategory = "역사문화";
-        } else if (linkClass.equals("M")) {
-            categoryValue = "실용";
-            detailCategory = "교양과학";
-        } else if (linkClass.equals("N")) {
-            categoryValue = "실용";
-            detailCategory = "외국어";
-        } else if (linkClass.equals("Q")) {
-            categoryValue = "실용";
-            detailCategory = "예술";
-        } else if (linkClass.equals("d")) {
-            categoryValue = "실용";
-            detailCategory = "여행";
-        } else if (linkClass.equals("c")) {
-            categoryValue = "자기계발";
-            detailCategory = "자기계발";
-        }
-
-        String url = "http://www.kyobobook.co.kr/bestSellerNew/bestseller.laf?mallGb=KOR&linkClass=" + linkClass + "&range=1&kind=0&orderClick=DAb";
+    public List<Music> musicSearchCrawling(String searchName) throws Exception {
+        String url = "https://music.naver.com/search/search.nhn?query=" + searchName + "&target=track";
         Document doc = Jsoup.connect(url).get();
 
-        Elements elements = doc.select("ul.list_type01");
+        List<Music> musicList = new ArrayList<>();
+        int i=1;
+        for (int n = 2; n < 52; n++) {
+            Elements trElement = doc.select("tr._tracklist_move:nth-child(" + n + ")");
 
-        Iterator<Element> bookIterator = elements.select(" > li").iterator();
+            String number = trElement.select("td.order").text();
+            log.info(number);
+            String name = trElement.select("td.name a._title span.ellipsis").text();
+            String detailUrl = "https://music.naver.com" + trElement.select("td.name a.thumb").attr("href");
+            String img = Jsoup.connect(detailUrl).get().select("div#content div.thumb a img").attr("src");
+            String genre = "발라드";
+            String artist = trElement.select("td._artist a._artist span.ellipsis").text();
+            log.info(trElement.select("td.name a._title").attr("href"));
+            String lyricUrl = "https://music.naver.com/lyric/index.nhn?trackId=" + trElement.select("td.name a._title").attr("href").substring(1);
+            Document lyricDoc = Jsoup.connect(lyricUrl).get();
+            String lyric = lyricDoc.select("div.section_lyrics div#lyricText").text();
 
-        int i = 1;
-        while (bookIterator.hasNext()) {
-            Element bookInfo = bookIterator.next();
-            String rank = bookInfo.select("div.cover a strong.rank").text();
-            String img = bookInfo.select("div.cover a img").attr("src");
-            String bookUrl = bookInfo.select("div.detail div.title a").attr("href");
-            String subTitle = bookInfo.select("div.detail div.subtitle").text();
-
-            Document doc2 = Jsoup.connect(bookUrl).get();
-            Elements bookDetailInfo = doc2.select("div.content_middle div.box_detail_point");
-            String title = doc2.select("h1.title > strong").text();
-            String author = bookDetailInfo.select("div.author span.name:nth-child(1) a:nth-child(1)").text();
-//            int categoryCount = bookDetailInfo.select("div.rank a:nth-child(3)").text().indexOf(" ");
-//            log.info("--------------------");
-//            log.info(i + "번째 index");
-//            log.info("text: " + bookDetailInfo.select("div.rank a:nth-child(3)").text());
-//            log.info("indexOf: " + bookDetailInfo.select("div.rank a:nth-child(3)").text().indexOf(" "));
-//            log.info("--------------------");
-//            String category = bookDetailInfo.select("div.rank a:nth-child(3)").text().substring(0, categoryCount).trim();
-            String tag = doc2.select("div.content_middle div.box_detail_content div.tag_list").text();
-            String[] splitTag = tag.split(" ");
-            if (splitTag.length > 3) {
-                tag = splitTag[0] + " " + splitTag[1] + " " + splitTag[2];
-            }
-            int publicationDateLength = bookDetailInfo.select("div.author span.date").text().length();
-            String publicationDate = bookDetailInfo.select("div.author span.date").text().substring(0, publicationDateLength-3);
-
-            Book book = Book.builder()
-                    .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
-                    .searchBy(null)
-                    .name(title)
-                    .subName(subTitle)
-                    .category(categoryValue)
-                    .detailCategory(detailCategory)
-                    .img(img)
-                    .author(author)
-                    .url(bookUrl)
-                    .rank(rank)
-                    .tag(tag)
-                    .bestCellar(true)
-                    .publicationDate(publicationDate)
-                    .build();
-            bookRepository.save(book);
-            bookList.add(book);
-
-            log.info("--------------------");
-            log.info(i + "번째 도서 크롤링 시작");
-            log.info("rank: " + rank);
-            log.info("name: " + title);
-            log.info("subName: " + subTitle);
-            log.info("category: " + detailCategory);
-            log.info("img: " + img);
-            log.info("author: " + author);
-            log.info("url: " + bookUrl);
-            log.info("tag: " + tag);
-            log.info("publicationDate: " + publicationDate);
-            log.info("--------------------");
+            log.info("------------------------------");
+            log.info(i + "번째 노래 크롤링 시작");
+            log.info("번호: " + number);
+            log.info("제목: " + name);
+            log.info("상세 URL: " + detailUrl);
+            log.info("이미지: " + img);
+            log.info("장르: " + genre);
+            log.info("가수: " + artist);
+            log.info("------------------------------");
             i++;
+
+            Music music = Music.builder()
+                    .name(name)
+                    .img(img)
+                    .genre(genre)
+                    .artist(artist)
+                    .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                    .build();
+
+            musicRepository.save(music);
+            musicList.add(music);
         }
+        return musicList;
+    }
+
+    public List<Music> getSearchByLyric(String keyword) throws IOException {
+
+        List<Music> musicList = new ArrayList<Music>();
+        String url = "https://music.naver.com/search/search.nhn?query=" + keyword + "&target=lyric";
+        Document doc = Jsoup.connect(url).get();
+        Elements elements = doc.select("ul.lst_detail5 li");
+        for (Element element : elements) {
+            String name = element.select("span.ico_play a").text();
+            String lyric = element.select("p").text();
+            String artist = element.select("span.dsc a").text();
+
+            log.info("제목: " + name);
+            log.info("가사: " + lyric);
+            log.info("가수: " + artist);
+
+            Music music = Music.builder()
+                    .name(name)
+                    .lyric(lyric)
+                    .artist(artist)
+                    .searchBy(keyword)
+                    .isLyric(true)
+                    .searchDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                    .build();
+
+            musicRepository.save(music);
+
+            musicList.add(music);
+        }
+        return musicList;
     }
 }

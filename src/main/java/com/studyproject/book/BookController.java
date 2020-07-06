@@ -120,6 +120,7 @@ public class BookController {
     public String bookCategoryList(@CurrentUser Account account, @PathVariable String detailCategory, Model model) {
         List<Book> bookList = bookRepository.findBySearchDateAndDetailCategoryAndBestCellar(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), detailCategory, false);
         List<String> favorBookList = favorBookRepository.findBookNameByAccountId(account.getId());
+        model.addAttribute("account", account);
         model.addAttribute("bookList", bookList);
         model.addAttribute("favorBookList", favorBookList);
         return "book/category/category-list";

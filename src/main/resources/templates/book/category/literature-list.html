@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-4" th:each="book: ${bookBestCellarList}">
                     <div class="card mb-4 shadow-sm">
-                        <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}">
+                        <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}" width="400" height="400">
                         <div class="card-body">
                             <h5 class="card-title context" th:text="${book.rank+'. '+book.name}"></h5>
                             <p class="card-text" th:text="${book.subName}">Short description</p>

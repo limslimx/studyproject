@@ -2,70 +2,51 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head"></head>
-<body class="bg-light">
+<body class="bg-light" style='background-image:url("images/bg4.png"); background-size: cover; background-repeat: no-repeat'>
 <div th:replace="fragments.html :: main-nav"></div>
-<div class="alert alert-warning" role="alert" th:if="${account != null && !account.emailVerified}">
-    독서할래 회원가입을 완료하려면 <a th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a>하세요.
-</div>
 
 <div class="container">
     <div class="py-5 text-center">
-        <h2>독서할래</h2>
-        <div th:if="${!#lists.isEmpty(bookRecommendList)}">
-            <small>이런 책들은 어떠신가요? 독서할래가 회원님을 위해 추천하는 도서들입니다.</small>
+        <h2 style="color: lightgray">노래듣자</h2>
+        <div th:if="${!#lists.isEmpty(musicRecommendList)}">
+            <small>관리자가 사용자 여러분들을 위해 추천한 노래들입니다.</small>
             <hr/>
         </div>
     </div>
-    <div th:if="${!#lists.isEmpty(bookRecommendList)}" class="row justify-content-center pt-3">
+    <div th:if="${!#lists.isEmpty(musicRecommendList)}" class="row justify-content-center pt-3">
         <div class="col-sm-8">
             <div class="row">
-                <div class="col-md-4" th:each="book: ${bookRecommendList}">
+                <div class="col-md-4" th:each="music: ${musicRecommendList}">
                     <div class="card mb-4 shadow-sm">
-                        <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}">
+                        <img th:src="${music.img}" class="card-img-top" th:alt="${music.name}">
                         <div class="card-body">
-                            <h5 class="card-title context bookName" th:text="${book.name}"
-                                th:id="${book.name}"></h5>
-                            <p class="card-text" th:text="${book.subName}">Short description</p>
+                            <h5 class="card-title context bookName" th:text="${music.name}"
+                                th:id="${music.name}"></h5>
                             <p class="card-text context">
-                                <span th:each="tag : ${book.tag}"
-                                      class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
-                                    <a th:href="@{'/search/tag/' + ${tag}}" class="text-decoration-none text-white">
-                                        <i class="fa fa-tag"></i> <span th:text="${tag}">Tag</span>
-                                    </a>
-                                </span>
-                                <br/>
-                                <span th:each="category: ${book.detailCategory}"
+                                <span th:each="genre: ${music.genre}"
                                       class="font-weight-light text-monospace badge badge-primary mr-3">
-                                    <a th:href="@{'/book/category/' + ${book.detailCategory}}"
+                                    <a th:href="@{'/book/category/' + ${music.genre}}"
                                        class="text-decoration-none text-white">
-                                        <i class="fas fa-th-list"></i> <span th:text="${category}" class="text-white">City</span>
+                                        <i class="fas fa-th-list"></i> <span th:text="${genre}" class="text-white">City</span>
                                     </a>
                                 </span>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
                                     <i class="fa fa-user-circle"></i>
-                                    <span th:text="${book.author}"></span> 저
+                                    <span th:text="${music.artist}"></span>
                                 </small>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
                                     <i class="fas fa-clock"></i>
-                                    <span class="date" th:text="${book.publicationDate}">9 mins</span>
+                                    <span class="date" th:text="${music.publicationDate}">9 mins</span>
                                 </small>
                             </div>
                             <hr/>
                             <div class="text-center">
-                                <a type="button" th:href="@{'/bookReview/' + ${book.id}}"
-                                   class="btn btn-primary btn-sm">독서록 작성하기</a>
-                                <button th:if="${!#lists.contains(favorBookList, book.name)}" type="button"
-                                        th:id="${book.name}" onclick="favorBook.add_btn(this.id)"
-                                        class="btn btn-secondary btn-sm favorBookAdd_btn">관심도서 추가하기
-                                </button>
-                                <button th:if="${#lists.contains(favorBookList, book.name)}" type="button"
-                                        th:id="${book.name}" onclick="favorBook.delete_btn(this.id)"
-                                        class="btn btn-danger btn-sm favorBookDelete_btn">관심도서 삭제하기
-                                </button>
+                                <button th:if="${!#lists.contains(favorMusicList, music.name)}" type="button" th:id="${music.name}" onclick="favorMusic.add_btn(this.id)" class="btn btn-secondary btn-sm favorBookAdd_btn">관심노래 추가하기</button>
+                                <button th:if="${#lists.contains(favorMusicList, music.name)}" type="button" th:id="${music.name}" onclick="favorMusic.delete_btn(this.id)" class="btn btn-danger btn-sm favorBookDelete_btn">관심노래 삭제하기</button>
                             </div>
                         </div>
                     </div>
@@ -76,7 +57,7 @@
 </div>
 
 <footer th:replace="fragments.html :: footer"></footer>
-<script th:replace="book-fragments.html :: favorBook-event"></script>
+<script th:replace="music-fragments.html :: favorMusic-event"></script>
 </div>
 </body>
 </html>

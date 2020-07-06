@@ -1,13 +1,7 @@
 package com.studyproject.account;
 
-import com.studyproject.bookReview.BookReviewRepository;
 import com.studyproject.config.AppProperties;
 import com.studyproject.domain.Account;
-import com.studyproject.domain.BookReview;
-import com.studyproject.domain.FavorBook;
-import com.studyproject.favorBook.FavorBookRepository;
-import com.studyproject.mail.EmailMessage;
-import com.studyproject.mail.EmailService;
 import com.studyproject.settings.NotificationForm;
 import com.studyproject.settings.Profile;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -34,12 +27,9 @@ import java.util.Collections;
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
-    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final TemplateEngine templateEngine;
     private final AppProperties appProperties;
-    private final FavorBookRepository favorBookRepository;
-    private final BookReviewRepository bookReviewRepository;
 
     /*accountRepository.save()를 실행한 후에는 newAccount는 영속상태가 아닌 detached상태인데
    그렇기 때문에 newAccount.generateEmailCheckToken()을 실행해도 영속상태가 아니기 때문에 변경감지가 일어나지 않고 db에 값이 저장되지 않는다.
@@ -48,8 +38,6 @@ public class AccountService implements UserDetailsService {
      */
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
-        newAccount.generateEmailCheckToken();
-        sendSignUpConfirmEmail(newAccount);
 
         return newAccount;
     }
@@ -59,29 +47,8 @@ public class AccountService implements UserDetailsService {
                 .nickname(signUpForm.getNickname())
                 .email(signUpForm.getEmail())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
-                .studyCreatedByWeb(true)
-                .studyEnrollmentResultByWeb(true)
-                .studyUpdateByWeb(true)
                 .build();
         return accountRepository.save(account);
-    }
-
-    public void sendSignUpConfirmEmail(Account newAccount) {
-        Context context = new Context();
-        context.setVariable("link", "/check-email-token?token=" + newAccount.getEmailCheckToken() + "&email=" + newAccount.getEmail());
-        context.setVariable("nickname", newAccount.getNickname());
-        context.setVariable("linkname", "이메일 인증하기");
-        context.setVariable("message", "독서할래 서비스에 가입을 완료하려면 링크를 클릭하세요.");
-        context.setVariable("host", appProperties.getHost());
-        String message = templateEngine.process("mail/simple-link", context);
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(newAccount.getEmail())
-                .subject("독서할래 회원가입 인증 메일")
-                .message(message)
-                .build();
-
-        emailService.sendEmail(emailMessage);
     }
 
     public void login(Account account) {
@@ -98,6 +65,7 @@ public class AccountService implements UserDetailsService {
         log.info("########## loaduserByUsername start! ########## ");
         //db에서 우선 email값으로 계정 정보가 존재하는지 확인해보고 없으면 nickname값으로 확인함
         Account account = accountRepository.findByEmail(emailOrNickname);
+
         if (account == null) {
             account = accountRepository.findByNickname(emailOrNickname);
         }
@@ -145,23 +113,6 @@ public class AccountService implements UserDetailsService {
         login(account); //navbar쪽의 로그인 정보를 바꿔주기 위해서는 authentication에 갱신된 account를 등록해줘야하기 때문
     }
 
-    public void sendLoginLink(Account account) {
-        Context context = new Context();
-        context.setVariable("link", "/update-password-by-email?token=" + account.getEmailCheckToken() + "&email=" + account.getEmail());
-        context.setVariable("nickname", account.getNickname());
-        context.setVariable("linkname", "비밀번호 수정하기");
-        context.setVariable("message", "독서할래의 비밀번호를 수정하려면 아래 링크를 클릭하세요.");
-        context.setVariable("host", appProperties.getHost());
-        String message = templateEngine.process("mail/simple-link", context);
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(account.getEmail())
-                .subject("독서할래 비밀번호 수정 링크")
-                .message(message)
-                .build();
-        emailService.sendEmail(emailMessage);
-    }
-
     public boolean deleteValidate(String nickname) {
         Account account = accountRepository.findByNickname(nickname);
         boolean validation = true;
@@ -174,8 +125,6 @@ public class AccountService implements UserDetailsService {
 
     public void deleteAccount(String nickname) {
         Account account = accountRepository.findByNickname(nickname);
-        favorBookRepository.deleteByAccount(account);
-        bookReviewRepository.deleteByAccount(account);
         accountRepository.delete(account);
     }
 }

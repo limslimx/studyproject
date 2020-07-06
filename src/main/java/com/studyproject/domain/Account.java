@@ -73,8 +73,4 @@ public class Account {
     public boolean isValidToken(String token) {
         return this.emailCheckToken.equals(token);
     }
-
-    public boolean isManagerOfBookReview(BookReview bookReview) {
-        return bookReview.getAccount().equals(this);
-    }
 }
