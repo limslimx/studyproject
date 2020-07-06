@@ -48,7 +48,7 @@
 <!-- nav -->
 <nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-light" style="background-color: #3D3D3D;">
     <a class="navbar-brand" th:href="@{/}">
-        <img src="/images/logo.png" width="30" height="30">
+        <img src="/images/book.png" width="30" height="30">
         <small style="color: white">독서할래</small>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,7 +96,6 @@
                     <a class="dropdown-item" th:href="@{'/bookReview/list/' + ${#authentication.name}}">독서록</a>
                     <a class="dropdown-item" th:href="@{'/favorBook/list'}">관심도서</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" th:href="@{'/settings/profile'}">설정</a>
                     <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
                         <button class="dropdown-item" type="submit">로그아웃</button>
                     </form>
@@ -117,9 +116,9 @@
 
 <!-- settings menu -->
 <div th:fragment="settings-menu (currentMenu)" class="list-group">
-    <div id="nickname" class="list-group-item" th:text="${account.nickname}"></div>
+    <div id="nickname" class="list-group-item" th:text="${account.nickname+'의 개인설정'}"></div>
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" th:href="@{/settings/profile}">프로필</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" th:href="@{/settings/password}">패스워드</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" th:href="@{/settings/password}">비밀번호</a>
     <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active" th:href="@{/settings/account}">계정</a>
 </div>
 

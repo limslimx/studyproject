@@ -15,7 +15,7 @@
         <form class="col-sm-3" th:action="@{/book/search/save}" th:object="${bookSearchForm}" method="post" novalidate>
             <div class="form-group">
                 <label for="searchBy">검색어</label>
-                <input type="text" id="searchBy" th:field="*{searchBy}" class="form-control" aria-describedby="searchByHelp" required>
+                <input type="text" id="searchBy" th:field="*{searchBy}" class="form-control" aria-describedby="searchByHelp" placeholder="책 제목" required>
                 <small id="searchByHelp" class="form-text text-muted">
                     찾고싶은 책을 입력하세요.
                 </small>
@@ -28,12 +28,13 @@
             </div>
         </form>
     </div>
+    <hr th:if="${!#arrays.isEmpty(bookList)}"/>
     <div class="row justify-content-center pt-3">
         <div class="col-sm-8">
             <div class="row">
                 <div class="col-md-4" th:each="book: ${bookList}">
                     <div class="card mb-4 shadow-sm">
-                        <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}">
+                        <img th:src="${book.img}" class="card-img-top" th:alt="${book.name}" width="400" height="400">
                         <div class="card-body">
                             <h5 class="card-title context bookName" th:text="${book.name}" th:id="${book.name}"></h5>
                             <p class="card-text" th:text="${book.subName}">Short description</p>

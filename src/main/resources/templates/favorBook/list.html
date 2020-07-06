@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-4" th:each="favorBook: ${favorBookList}">
                     <div class="card mb-4 shadow-sm">
-                        <img th:src="${favorBook.book.img}" class="card-img-top" th:alt="${favorBook.book.name}">
+                        <img th:src="${favorBook.book.img}" class="card-img-top" th:alt="${favorBook.book.name}" width="400" height="400">
                         <div class="card-body">
                             <h5 class="card-title context" th:text="${favorBook.book.name}"></h5>
                             <p th:if="${favorBook.book.subName!=null}" class="card-text" th:text="${favorBook.book.subName}"></p>

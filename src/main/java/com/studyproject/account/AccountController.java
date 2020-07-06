@@ -38,7 +38,7 @@ public class AccountController {
     @GetMapping("/sign-up")
     public String signUpForm(Model model) {
         model.addAttribute("signUpForm", new SignUpForm());
-        return "account/sign-up2";
+        return "account/sign-up";
     }
 
     //회원가입 처리 핸들러
@@ -47,7 +47,7 @@ public class AccountController {
 
         //아래처럼만 작성해줘도 form에 들어갔던 데이터들과 errors을 model에 넣어 자동으로 화면에 보여준다
         if (errors.hasErrors()) {
-            return "account/sign-up2";
+            return "account/sign-up";
         }
 
         //회원가입form에 입력한 정보를 db에 저장하고 account엔티티 안에 이메일을 인증했는지 이메일 인증 토큰을 랜덤으로 생성한 후에 회원가입 시 입력한 이메일로 회원가입 시 메일 인증 링크를 보내줌
