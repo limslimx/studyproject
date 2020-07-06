@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="editor-script">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            $("#content").summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+                placeholder: '책의 줄거리나 느낀점을 자세히 적어 주세요.',
+                tabsize: 2,
+                height: 300
+            });
+        });
+    </script>
+</div>
+
+<div th:fragment="favorMusic-event">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    var favorMusic = {
+        add_btn : function (bookName) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            $.ajax({
+                url: "/favorMusic/add/" + bookName,
+                type: "POST",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                }
+            }).done(function (result) {
+                alert(result + "를 관심음악에 추가하였습니다.");
+                location.href = "/";
+            });
+        },
+        delete_btn: function (bookName) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            $.ajax({
+                url: "/favorMusic/delete/" + bookName,
+                type: "POST",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                }
+            }).done(function (result) {
+                alert(result + "를 관심음악에서 삭제하였습니다.");
+                location.href = "/favorMusic/list";
+            });
+        }
+    }
+</script>
+</div>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body class="bg-light">
+<div th:replace="fragments.html :: main-nav"></div>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>노래 상세</h2>
+    </div>
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2">
+            <img th:src="${music.img}">
+        </div>
+
+        <div class="col-6">
+            <div class="row">
+                <h3 class="col-sm-10" th:text="${music.name}"></h3>
+            </div>
+            <hr/>
+            <div class="card">
+                아티스트 <small th:text="${music.artist}"></small><br/>
+                <div th:if="${music.genre!=null}">
+                장르 <small th:if="${music.genre!=null}" th:text="${music.genre}"></small><br/>
+                발매 <small th:if="${music.publicationDate!=null}" th:text="${music.publicationDate}"></small><br/>
+                배급 <small th:if="${music.artist!=null}"th:text="${music.publicationBy}"></small><br/>
+                </div>
+                가사 <hr/><p th:text="${music.lyric}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -60,85 +60,11 @@ public class AccountController {
         return "redirect:/";
     }
 
-    //이메일 인증 기능 처리 핸들러
-    @GetMapping("/check-email-token")
-    public String checkEmailToken(String token, String email, Model model) {
-        Account account = accountRepository.findByEmail(email);
-        String view = "account/checked-email";
-        if (account == null) {
-            model.addAttribute("error", "wrong.email");
-            return view;
-        }
-
-        log.info("emailToken: " + account.getEmailCheckToken());
-        if (!account.isValidToken(token)) {
-            model.addAttribute("error", "wrong.token");
-            return view;
-        }
-
-        //이메일 인증이 완료되었다고 account.emailVerified필드에 true값 넣고, 언제 가입했는지 알기 위해 joinedAt에 LocalDateTime.now()값을 넣는 로직
-        accountService.completeSignUp(account);
-
-        model.addAttribute("numberOfUser", accountRepository.count());
-        model.addAttribute("nickname", account.getNickname());
-        return view;
-    }
-
     //이메일 인증 폼 핸들러
     @GetMapping("/check-email")
     public String checkEmail(@CurrentUser Account account, Model model) {
         model.addAttribute("email", account.getEmail());
         return "account/check-email";
-    }
-
-    //이메일 인증 링크 재전송 기능 핸들러
-    @GetMapping("/resend-email")
-    public String resendEmail(@CurrentUser Account account) {
-        accountService.sendSignUpConfirmEmail(account);
-        return "redirect:/";
-    }
-
-    //프로필 뷰 핸들러
-    @GetMapping("/profile/{nickname}")
-    public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
-        Account byNickname = accountRepository.findByNickname(nickname);
-        if (byNickname == null) {
-            throw new IllegalArgumentException(nickname + "에 해당되는 사용자가 없습니다.");
-        }
-
-        model.addAttribute("account", byNickname);
-        model.addAttribute("isOwner", byNickname.equals(account));
-
-        return "account/profile";
-    }
-
-    @GetMapping("/email-login")
-    public String emailLogin() {
-        return "account/email-login";
-    }
-
-    @PostMapping("/email-login")
-    public String sendEmailLoginLink(String email, Model model, RedirectAttributes attributes) {
-        Account byEmail = accountRepository.findByEmail(email);
-        if (byEmail == null) {
-            model.addAttribute("error", "유효한 이메일이 주소가 아닙니다.");
-            return "account/email-login";
-        }
-        accountService.sendLoginLink(byEmail);
-        attributes.addFlashAttribute("message", "이메일 인증 메일을 발송했습니다.");
-        return "redirect:/email-login";
-    }
-
-    @GetMapping("/update-password-by-email")
-    public String updatePasswordByEmail(String token, String email, Model model) {
-        Account byEmail = accountRepository.findByEmail(email);
-        if (byEmail == null || !byEmail.isValidToken(token)) {
-            model.addAttribute("error", "비밀번호를 수정할 수 없습니다.");
-            return "account/update-password-by-email";
-        }
-        model.addAttribute("passwordForm", new PasswordForm());
-        accountService.login(byEmail);
-        return "account/update-password-by-email";
     }
 
     @PostMapping("/update/password")

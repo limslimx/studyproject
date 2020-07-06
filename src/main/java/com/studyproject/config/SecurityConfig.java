@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //페이지별 접근 권한 설정
         http.authorizeRequests()
-                .mvcMatchers("/", "/login", "/sign-up", "check-email-token", "/email-login", "/check-email-login", "/update-password-by-email", "/login-link", "/search/bookReview", "/error").permitAll()
+                .mvcMatchers("/", "/login", "/sign-up", "check-email-token", "/email-login", "/check-email-login", "/update-password-by-email", "/login-link", "/error").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()
                 .anyRequest().authenticated();
 
